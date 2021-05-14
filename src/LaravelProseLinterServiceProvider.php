@@ -2,6 +2,7 @@
 
 namespace Beyondcode\LaravelProseLinter;
 
+use Beyondcode\LaravelProseLinter\Console\Commands\ProseTranslationLinter;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelProseLinterServiceProvider extends ServiceProvider
@@ -21,7 +22,7 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('laravel-prose-linter.php'),
+                __DIR__ . '/../config/config.php' => config_path('laravel-prose-linter.php'),
             ], 'config');
 
             // Publishing the views.
@@ -39,8 +40,10 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-prose-linter'),
             ], 'lang');*/
 
-            // Registering package commands.
-            // $this->commands([]);
+//             Registering package commands.
+            $this->commands([
+                ProseTranslationLinter::class
+            ]);
         }
     }
 
@@ -50,7 +53,7 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'laravel-prose-linter');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-prose-linter');
 
         // Register the main class to use with the facade
         $this->app->singleton('laravel-prose-linter', function () {
