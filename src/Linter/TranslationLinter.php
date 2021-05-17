@@ -38,7 +38,7 @@ class TranslationLinter extends Linter
             try {
                 $this->lintSingleTranslation($translationKey, $translationText);
             } catch (LinterException $linterException) {
-                $errors[$translationKey] = $linterException->getMessage();
+                $errors[$translationKey] = $linterException->getHint();
             } catch (ProcessFailedException $processFailedException) {
                 break; // todo
             }
@@ -63,31 +63,7 @@ class TranslationLinter extends Linter
         $output = $process->getOutput();
 
         if (!empty($output))
-            throw new LinterException($this->transformToMessage($output));
+            throw LinterException::withHint($output, $translationKey);
     }
 
-    private function transformToMessage($output)
-    {
-
-        $allMessages = Str::of($output)->explode("stdin.md:")->toArray();
-        $allValidMessages = Arr::where($allMessages, function ($value, $key) {
-            return !empty($value);
-        });
-
-        $messages = "";
-        foreach ($allValidMessages as $message) {
-            // remove first line pos
-            $result = Str::substr($message, 2);
-
-            // determine column error position given by vale
-            $pos = Str::before($result, ":");
-
-            // determine hints from vale
-            $message = Str::after($result, ":");
-
-            $messages .= "At position {$pos}: {$message}";
-        }
-
-        return Str::of($messages)->trim()->rtrim();
-    }
 }

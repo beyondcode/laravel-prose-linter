@@ -6,23 +6,19 @@ use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
 use Illuminate\Console\Command;
 use Beyondcode\LaravelProseLinter\LaravelProseLinter;
 
-class ProseTranslationLinter extends Command
+class ProseViewLinter extends Command
 {
-    protected $signature = 'lint:translation {namespace?}';
+    protected $signature = 'lint:blade {viewPath?}';
 
-    protected $description = "Lints all translations ";
+    protected $description = "Lints all or the selected blade template.";
 
     public function handle()
     {
-        // toDo: namespace
-
-
-        $this->info("🗣  Start linting translations");
+        $this->info("🗣  Start linting blade templates");
 
         $linter = new TranslationLinter();
 
-        $lintingErrors = $linter->all(); // todo with linter -> all and haserrors
-
+        $lintingErrors = $linter->all();
 
         if (count($lintingErrors) > 0) {
             foreach ($lintingErrors as $namespaceKey => $errors) {
@@ -30,7 +26,7 @@ class ProseTranslationLinter extends Command
                 foreach ($errors as $translationKey => $hint) {
                     $this->newLine();
                     $this->warn("{$namespaceKey}.{$translationKey}:");
-                    $this->comment($hint->toCliOutput());
+                    $this->comment($hint);
                 }
                 $this->newLine(2);
 

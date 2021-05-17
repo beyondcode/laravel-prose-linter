@@ -2,9 +2,7 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Cassandra\Exception\UnpreparedException;
-
-class Linter
+abstract class Linter
 {
 
     protected string $valePath;
@@ -14,9 +12,7 @@ class Linter
         $this->valePath = base_path("vendor/beyondcode/laravel-prose-linter/src/vale-ai/bin");
     }
 
-    public function all() {
-        throw new UnpreparedException();
-    }
+    public abstract function all();
 
 
 }
