@@ -3,6 +3,7 @@
 namespace Beyondcode\LaravelProseLinter;
 
 use Beyondcode\LaravelProseLinter\Console\Commands\ProseTranslationLinter;
+use Beyondcode\LaravelProseLinter\Console\Commands\ProseViewLinter;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelProseLinterServiceProvider extends ServiceProvider
@@ -42,7 +43,8 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
 
 //             Registering package commands.
             $this->commands([
-                ProseTranslationLinter::class
+                ProseTranslationLinter::class,
+                ProseViewLinter::class
             ]);
         }
     }

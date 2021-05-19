@@ -10,20 +10,20 @@ use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 class TranslationLinter extends Linter
 {
 
-    public function all()
+    public function lintAll()
     {
         // toDo all without namespace
         $namespaceTranslations = ["auth" => $this->readTranslationArray("auth")];
 
-        $results = [];
+        $this->results = [];
         foreach ($namespaceTranslations as $namespaceKey => $translations) {
 
             $lintingResult = $this->lintTranslations($translations);
 
-            $results[$namespaceKey] = $lintingResult;
+            $this->results[$namespaceKey] = $lintingResult;
         }
 
-        return $results;
+        return $this->results;
     }
 
     public function readTranslationArray(string $namespace)
@@ -65,5 +65,19 @@ class TranslationLinter extends Linter
         if (!empty($output))
             throw LinterException::withHint($output, $translationKey);
     }
+
+    public function getResults()
+    {
+        return $this->results;
+    }
+
+    public function hasErrors(): bool
+    {
+        if(count($this->results) == 0) {
+            return false;
+        }
+        return true;
+    }
+
 
 }

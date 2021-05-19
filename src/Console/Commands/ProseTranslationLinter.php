@@ -15,17 +15,15 @@ class ProseTranslationLinter extends Command
     public function handle()
     {
         // toDo: namespace
-
-
         $this->info("🗣  Start linting translations");
 
         $linter = new TranslationLinter();
 
-        $lintingErrors = $linter->all(); // todo with linter -> all and haserrors
+        $linter->lintAll();
 
 
-        if (count($lintingErrors) > 0) {
-            foreach ($lintingErrors as $namespaceKey => $errors) {
+        if ($linter->hasErrors()) {
+            foreach ($linter->getResults() as $namespaceKey => $errors) {
 
                 foreach ($errors as $translationKey => $hint) {
                     $this->newLine();
@@ -36,7 +34,7 @@ class ProseTranslationLinter extends Command
 
             }
         } else {
-            $this->success("✅ No errors, warnings or suggestions found.");
+            $this->info("✅ No errors, warnings or suggestions found.");
         }
 
         $this->info("🏁 Finished linting.");

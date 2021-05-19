@@ -3,6 +3,7 @@
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
 use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
+use Beyondcode\LaravelProseLinter\Linter\ViewLinter;
 use Illuminate\Console\Command;
 use Beyondcode\LaravelProseLinter\LaravelProseLinter;
 
@@ -16,24 +17,10 @@ class ProseViewLinter extends Command
     {
         $this->info("🗣  Start linting blade templates");
 
-        $linter = new TranslationLinter();
+        $linter = new ViewLinter();
 
-        $lintingErrors = $linter->all();
+        $linter->lintAll();
 
-        if (count($lintingErrors) > 0) {
-            foreach ($lintingErrors as $namespaceKey => $errors) {
-
-                foreach ($errors as $translationKey => $hint) {
-                    $this->newLine();
-                    $this->warn("{$namespaceKey}.{$translationKey}:");
-                    $this->comment($hint);
-                }
-                $this->newLine(2);
-
-            }
-        } else {
-            $this->success("✅ No errors, warnings or suggestions found.");
-        }
 
         $this->info("🏁 Finished linting.");
     }
