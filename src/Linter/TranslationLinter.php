@@ -68,18 +68,5 @@ class TranslationLinter extends Linter
         }
     }
 
-    public function getResults()
-    {
-        return $this->results;
-    }
-
-    public function hasErrors(): bool
-    {
-        if (count($this->results) == 0) {
-            return false;
-        }
-        return true;
-    }
-
 
 }

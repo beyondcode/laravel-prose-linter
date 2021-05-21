@@ -14,9 +14,20 @@ abstract class Linter
 
     public abstract function lintAll();
 
-    public abstract function getResults();
 
-    public abstract function hasErrors(): bool;
+    public function getResults()
+    {
+        return $this->results;
+    }
+
+    public function hasErrors(): bool
+    {
+        if (count($this->results) == 0) {
+            return false;
+        }
+        return true;
+    }
+
 
 
 }

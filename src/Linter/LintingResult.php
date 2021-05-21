@@ -23,7 +23,7 @@ class LintingResult
 
         $lintingResult->textIdentifier = $textIdentifier;
 
-        foreach ($results["stdin.md"] as $hint) {
+        foreach ($results[array_key_first($results)] as $hint) {
             $lintingResult->hints[] = LintingHint::fromJson($hint);
         }
 
