@@ -21,15 +21,23 @@ class ProseTranslationLinter extends Command
 
         $linter->lintAll();
 
-
         if ($linter->hasErrors()) {
-            foreach ($linter->getResults() as $namespaceKey => $errors) {
+            // go through namespaces
+            foreach ($linter->getResults() as $namespaceKey => $results) {
 
-                foreach ($errors as $translationKey => $hint) {
+                // go through translations in namespace
+                foreach ($results as $lintingResult) {
+
                     $this->newLine();
-                    $this->warn("{$namespaceKey}.{$translationKey}:");
-                    $this->comment($hint->toCliOutput());
+                    $this->warn("{$namespaceKey}.{$lintingResult->getTextIdentifier()}:");
+
+                    // go through hints in translation linting result
+                    foreach($lintingResult->getHints() as $hint) {
+                        $this->line($hint->toCliOutput());
+                    }
+
                 }
+
                 $this->newLine(2);
 
             }

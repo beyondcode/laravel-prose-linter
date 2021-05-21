@@ -2,10 +2,9 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Arr;
 use Symfony\Component\Process\Process;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class TranslationLinter extends Linter
 {
@@ -38,7 +37,7 @@ class TranslationLinter extends Linter
             try {
                 $this->lintSingleTranslation($translationKey, $translationText);
             } catch (LinterException $linterException) {
-                $errors[$translationKey] = $linterException->getHint();
+                $errors[] = $linterException->getResult();
             } catch (ProcessFailedException $processFailedException) {
                 break; // todo
             }
@@ -51,7 +50,7 @@ class TranslationLinter extends Linter
     {
 
         $process = Process::fromShellCommandline(
-            'vale --output=line --ext=".md" "' . $translationText . '"'
+            'vale --output=JSON --ext=".md" "' . $translationText . '"'
         );
         $process->setWorkingDirectory($this->valePath);
         $process->run();
@@ -60,10 +59,13 @@ class TranslationLinter extends Linter
             throw new ProcessFailedException($process);
         }
 
-        $output = $process->getOutput();
+        $result = json_decode($process->getOutput(), true);
 
-        if (!empty($output))
-            throw LinterException::withHint($output, $translationKey);
+        if (!empty($result)) {
+            throw LinterException::withResult($result, $translationKey);
+        } elseif ($result === null || !is_array($result)) {
+            throw new LinterException("Invalid vale output.");
+        }
     }
 
     public function getResults()
@@ -73,7 +75,7 @@ class TranslationLinter extends Linter
 
     public function hasErrors(): bool
     {
-        if(count($this->results) == 0) {
+        if (count($this->results) == 0) {
             return false;
         }
         return true;

@@ -3,21 +3,33 @@
 namespace Beyondcode\LaravelProseLinter\Exceptions;
 
 use Beyondcode\LaravelProseLinter\Linter\LintingHint;
+use Beyondcode\LaravelProseLinter\Linter\LintingResult;
 
 class LinterException extends \Exception
 {
-    public LintingHint $hint;
+    public LintingResult $result;
 
-    public static function withHint(string $output, string $translationKey) {
+    /**
+     * Creates a LinterException with a linting result & hints.
+     *
+     * @param array $output
+     * @param string $textKey
+     * @return LinterException
+     */
+    public static function withResult(array $output, string $textKey)
+    {
         $e = new LinterException("Linting errors were found");
 
-        $e->hint = LintingHint::fromCLIOutput($output, $translationKey);
+        $e->result = LintingResult::fromJsonOutput($textKey, $output);
 
         return $e;
     }
 
-    public function getHint(): LintingHint {
-        return $this->hint;
+    /**
+     * @return LintingResult
+     */
+    public function getResult(): LintingResult
+    {
+        return $this->result;
     }
-
 }
