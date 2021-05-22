@@ -2,19 +2,66 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ViewLinter extends Linter
 {
+    public function listBlades()
+    {
+
+        $viewsDirectory = resource_path("views");
+        $it = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($viewsDirectory));
+
+        $bladeTemplateFiles = new Collection();
+
+        // collect blade files recursively
+        $exclude = ["docs", "vendor"]; // TODO make this a command argument
+        $it->rewind();
+        while ($it->valid()) {
+
+            if (!$it->isDot()) {
+                $bladeTemplateFiles->add($it->key());
+            }
+
+            $it->next();
+        }
+
+        // filter dot files and extract template keys
+        $bladeTemplateKeys = $bladeTemplateFiles->map(function ($bladeTemplateFile) use ($exclude) {
+            if (Str::startsWith($bladeTemplateFile, ".")) return false;
+
+
+            // get filename
+            $bladePath = Str::afterLast($bladeTemplateFile, "views/");
+            if (Str::startsWith($bladePath, $exclude)) return false;
+
+
+
+            // extract template key
+            $bladePath = Str::before($bladePath, ".blade.php");
+
+            // replace slashes with dots
+            return Str::replace("/", ".", $bladePath);
+
+        })->reject(function ($bladeTemplateFile) {
+            return $bladeTemplateFile === false;
+        });
+
+        return $bladeTemplateKeys;
+    }
+
     public function lintAll()
     {
         // collect all blade keys
         $this->results = [];
-        $templates = ['preview'];
+        $templates = $this->listBlades()->toArray();
+
         foreach ($templates as $templateKey) {
             try {
                 $this->lintBladeTemplate($templateKey);

@@ -33,9 +33,6 @@ class ProseViewLinter extends Command
                     $this->line($hint->toCliOutput());
                 }
 
-
-                $this->newLine(2);
-
             }
         } else {
             $this->info("✅ No errors, warnings or suggestions found.");
