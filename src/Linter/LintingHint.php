@@ -41,4 +41,14 @@ class LintingHint
         return "[{$this->severity}] {$this->libraryCheck} at position {$this->position}: {$this->message}";
     }
 
+    public function toArray() {
+        return [
+            "libraryCheck" => $this->libraryCheck,
+            "position" => $this->position,
+            "message" => $this->message,
+            "severity" => $this->severity,
+        ];
+
+    }
+
 }

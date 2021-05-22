@@ -45,4 +45,18 @@ class LintingResult
     {
         return $this->hints;
     }
+
+    public function toArray(): array
+    {
+
+        $hints = [];
+        foreach ($this->getHints() as $hint) {
+            $hints[] = $hint->toArray();
+        }
+
+        return [
+            $this->getTextIdentifier() => $hints
+        ];
+
+    }
 }
