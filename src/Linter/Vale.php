@@ -16,21 +16,6 @@ class Vale
         $this->valePath = base_path("vendor/beyondcode/laravel-prose-linter/src/vale-ai/bin");
     }
 
-
-    public function getResults()
-    {
-        return $this->results;
-    }
-
-    public function hasErrors(): bool
-    {
-        if (count($this->results) == 0) {
-            return false;
-        }
-        return true;
-    }
-
-
     public function lintString()
     {
 
@@ -77,4 +62,25 @@ class Vale
         File::copy($viewPath, $this->valePath . "/tmp/{$templateKey}.blade.html");
 
     }
+
+    /**
+     * Build .vale.ini dynamically based on the configuration
+     */
+    public function buildBasedOnStyles() {
+        $configuredStyles = config('laravel-prose-linter.styles');
+
+        $buildBasedOnStyles = "";
+
+
+        $styles = [];
+        foreach($configuredStyles as $configuredStyle) {
+            $styleClass = new $configuredStyle();
+            $styles[] = $styleClass->getStyleDirectoryName();
+        }
+
+        dd($styles);
+
+    }
+
+
 }
