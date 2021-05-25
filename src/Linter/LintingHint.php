@@ -10,13 +10,15 @@ class LintingHint
 {
 
     private string $libraryCheck;
+    private int $line;
     private int $position;
     private string $message;
     private string $severity;
 
-    public function __construct(string $libraryCheck, int $position, string $message, string $severity)
+    public function __construct(string $libraryCheck, int $line, int $position, string $message, string $severity)
     {
         $this->libraryCheck = $libraryCheck;
+        $this->line = $line;
         $this->position = $position;
         $this->message = $message;
         $this->severity = $severity;
@@ -28,7 +30,8 @@ class LintingHint
 
         $hint = new LintingHint(
             $hintData["Check"],
-            $hintData["Span"][0],
+            $hintData['Line'],
+            $hintData['Span'][0],
             $hintData["Message"],
             $hintData["Severity"]
         );
@@ -38,17 +41,30 @@ class LintingHint
 
     public function toCLIOutput()
     {
-        return "[{$this->severity}] {$this->libraryCheck} at position {$this->position}: {$this->message}";
+        return "[{$this->severity}] {$this->libraryCheck} at position {$this->line}, {$this->position}: {$this->message}";
     }
 
-    public function toArray() {
+    public function toArray()
+    {
         return [
-            "libraryCheck" => $this->libraryCheck,
+            "line" => $this->line,
             "position" => $this->position,
             "message" => $this->message,
             "severity" => $this->severity,
+            "libraryCheck" => $this->libraryCheck,
+        ];
+    }
+
+
+    public function toFlatArray()
+    {
+        return [
+            $this->line,
+            $this->position,
+            $this->message,
+            $this->severity,
+            $this->libraryCheck,
         ];
 
     }
-
 }

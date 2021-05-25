@@ -48,15 +48,13 @@ class LintingResult
 
     public function toArray(): array
     {
-
         $hints = [];
         foreach ($this->getHints() as $hint) {
-            $hints[] = $hint->toArray();
+            $hints[] = array_merge(
+                [$this->getTextIdentifier()],
+                $hint->toFlatArray());
         }
 
-        return [
-            $this->getTextIdentifier() => $hints
-        ];
-
+        return $hints;
     }
 }

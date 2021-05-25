@@ -6,49 +6,13 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class ViewLinter extends Linter
+class ViewLinter extends Vale
 {
-    protected array $excludes = [];
 
-
-    public function lintAll()
-    {
-        // collect all blade keys
-        $this->results = [];
-        $templates = $this->listBlades()->toArray();
-
-        foreach ($templates as $templateKey) {
-            try {
-                $this->lintBladeTemplate($templateKey);
-            } catch (LinterException $linterException) {
-                $this->results[] = $linterException->getResult();
-            } catch (ProcessFailedException $processFailedException) {
-                break; // todo
-            }
-        }
-
-        return $this->results;
-    }
-
-
-    public function excludes(array $excludes)
-    {
-        $this->excludes = $excludes;
-        return $this;
-    }
-
-    public function includes(array $includes)
-    {
-        $this->includes = $includes;
-        return $this;
-    }
-
-
-    private function listBlades()
+    public function readBladeKeys($excludedDirectories)
     {
 
         $viewsDirectory = resource_path("views");
@@ -68,12 +32,12 @@ class ViewLinter extends Linter
         }
 
         // filter dot files and extract template keys
-        $bladeTemplateKeys = $bladeTemplateFiles->map(function ($bladeTemplateFile) {
+        $bladeTemplateKeys = $bladeTemplateFiles->map(function ($bladeTemplateFile) use ($excludedDirectories) {
             if (Str::startsWith($bladeTemplateFile, ".")) return false;
 
             // get filename
             $bladePath = Str::afterLast($bladeTemplateFile, "views/");
-            if (!empty($this->excludes) && Str::startsWith($bladePath, $this->excludes)) return false;
+            if (!empty($excludedDirectories) && Str::startsWith($bladePath, $excludedDirectories)) return false;
 
             // extract template key
             $bladePath = Str::before($bladePath, ".blade.php");
@@ -89,7 +53,7 @@ class ViewLinter extends Linter
     }
 
 
-    private function deleteLintableCopy($templateKey)
+    public function deleteLintableCopy()
     {
         $process = Process::fromShellCommandline(
             'rm -rf tmp'
@@ -98,9 +62,8 @@ class ViewLinter extends Linter
         $process->run();
     }
 
-    private function createLintableCopy($templateKey)
+    public function createLintableCopy($templateKey): string
     {
-
         $process = Process::fromShellCommandline(
             'mkdir tmp'
         );
@@ -110,28 +73,9 @@ class ViewLinter extends Linter
         // copy a view to the tmp
         $viewPath = view($templateKey)->getPath();
 
-        File::copy($viewPath, $this->valePath . "/tmp/{$templateKey}.blade.html");
+        $templateCopyPath = $this->valePath . "/tmp/{$templateKey}.blade.html";
+        File::copy($viewPath, $templateCopyPath);
 
-    }
-
-    public function lintBladeTemplate($templateKey)
-    {
-        $this->createLintableCopy($templateKey);
-
-        $process = Process::fromShellCommandline(
-            'vale --output=JSON tmp'
-        );
-        $process->setWorkingDirectory($this->valePath);
-        $process->run();
-
-        $this->deleteLintableCopy($templateKey);
-
-        $result = json_decode($process->getOutput(), true);
-
-        if (!empty($result)) {
-            throw LinterException::withResult($result, $templateKey);
-        } elseif ($result === null || !is_array($result)) {
-            throw new LinterException("Invalid vale output.");
-        }
+        return $templateCopyPath;
     }
 }
