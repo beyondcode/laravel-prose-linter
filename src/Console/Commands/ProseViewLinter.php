@@ -5,13 +5,14 @@ namespace Beyondcode\LaravelProseLinter\Console\Commands;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Illuminate\Console\Command;
 use Beyondcode\LaravelProseLinter\Linter\ViewLinter;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 
 class ProseViewLinter extends Command
 {
-    protected $signature = 'lint:blade {bladeTemplate?} {--exclude= : directories to exclude in format dir1,dir2,dir3 } {--json}';
+    protected $signature = 'lint:blade {bladeTemplate?: Template key for a single blade template} {--exclude= : directories to exclude in format dir1,dir2,dir3 } {--json}';
 
-    protected $description = "Lints blade templates.";
+    protected $description = "Lints blade templates with the Errata AI Vale Linter. Provide either a single blade template to lint or directories to exclude - or no arguments at all to lint all blade templates.";
 
     public function handle()
     {
@@ -29,7 +30,7 @@ class ProseViewLinter extends Command
                 return;
             }
         } elseif ($singleBladeTemplate !== null && !empty($directoriesToExclude)) {
-            $this->error("Invalid parameters. Please provide either a single file to lint or directories to exclude or no further options to lint all blade files.");
+            $this->error("Invalid parameters. Please provide either a single template key to lint or directories to exclude or no further options to lint all blade templates.");
             return;
         }
 
@@ -82,18 +83,22 @@ class ProseViewLinter extends Command
         $progressBar->finish();
         $this->newLine();
 
-        if (count($results) > 0) {
+        $totalHints = count($results);
+
+        if ($totalHints > 0) {
             if ($outputAsJson) {
                 $filePath = storage_path("linting_result_" . date("Y-m-d-H-i-s") . ".json");
                 File::put($filePath, json_encode($results, JSON_UNESCAPED_SLASHES));
 
-                $this->warn("Linting errors were found. For detail, check results in file");
+            $this->warn("{$totalHints} linting hints were found.");
+                $this->warn("For detail, check results in file");
                 $this->warn($filePath);
             } else {
                 $this->table(
                     ['Template Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
                     $results
                 );
+                $this->warn("{$totalHints} linting hints were found.");
             }
         } else {
             $this->info("✅ No errors, warnings or suggestions found.");
