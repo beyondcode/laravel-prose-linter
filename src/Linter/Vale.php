@@ -14,6 +14,7 @@ class Vale
     public function __construct()
     {
         $this->valePath = base_path("vendor/beyondcode/laravel-prose-linter/src/vale-ai/bin");
+        $this->writeValeIni();
     }
 
     public function lintString()
@@ -21,65 +22,62 @@ class Vale
 
     }
 
-    public function lintFile($filePath, $textIdentifier = null)
+    public function lintFile($filePath, $textIdentifier)
     {
         $process = Process::fromShellCommandline(
-            'vale --output=JSON tmp'
+            'vale --output=JSON ' . $filePath
         );
         $process->setWorkingDirectory($this->valePath);
+
         $process->run();
 
         $result = json_decode($process->getOutput(), true);
 
         if (!empty($result)) {
-            throw LinterException::withResult($result, $textIdentifier ?? $filePath);
+            throw LinterException::withResult($result, $textIdentifier);
         } elseif ($result === null || !is_array($result)) {
-            throw new LinterException("Invalid vale output.");
+            throw new \Exception("Invalid vale output. " . print_r($process->getOutput(), true));
         }
-    }
-
-    private function deleteLintableCopy()
-    {
-        $process = Process::fromShellCommandline(
-            'rm -rf tmp'
-        );
-        $process->setWorkingDirectory($this->valePath);
-        $process->run();
-    }
-
-    private function createLintableCopy($templateKey)
-    {
-
-        $process = Process::fromShellCommandline(
-            'mkdir tmp'
-        );
-        $process->setWorkingDirectory($this->valePath);
-        $process->run();
-
-        // copy a view to the tmp
-        $viewPath = view($templateKey)->getPath();
-
-        File::copy($viewPath, $this->valePath . "/tmp/{$templateKey}.blade.html");
-
     }
 
     /**
      * Build .vale.ini dynamically based on the configuration
      */
-    public function buildBasedOnStyles() {
+    protected function getAppliedStyles()
+    {
         $configuredStyles = config('laravel-prose-linter.styles');
 
-        $buildBasedOnStyles = "";
-
-
         $styles = [];
-        foreach($configuredStyles as $configuredStyle) {
+        foreach ($configuredStyles as $configuredStyle) {
             $styleClass = new $configuredStyle();
             $styles[] = $styleClass->getStyleDirectoryName();
         }
 
-        dd($styles);
+        return implode(",", $styles);
+    }
 
+    /**
+     * Create .vale.ini during runtime
+     */
+    public function writeValeIni()
+    {
+        $appliedStyles = $this->getAppliedStyles();
+
+        if (count($appliedStyles) == 0) {
+            throw new \Exception("No styles defined. Please check your config (laravel-prose-linter.styles)!");
+        }
+
+        $valeIni = "
+StylesPath = styles
+[*.{html}]
+BasedOnStyles = {$appliedStyles}
+";
+        File::put($this->valePath . "/.vale.ini", $valeIni);
+    }
+
+    public function restoreIni()
+    {
+        File::copy($this->valePath . "/.vale_default.ini", $this->valePath . "/.vale.ini");
     }
 
 

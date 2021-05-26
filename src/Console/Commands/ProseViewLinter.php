@@ -7,10 +7,11 @@ use Illuminate\Console\Command;
 use Beyondcode\LaravelProseLinter\Linter\ViewLinter;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class ProseViewLinter extends Command
 {
-    protected $signature = 'lint:blade {bladeTemplate?: Template key for a single blade template} {--exclude= : directories to exclude in format dir1,dir2,dir3 } {--json}';
+    protected $signature = 'lint:blade {bladeTemplate? : Template key for a single blade template} {--exclude= : directories to exclude in format dir1,dir2,dir3 } {--json}';
 
     protected $description = "Lints blade templates with the Errata AI Vale Linter. Provide either a single blade template to lint or directories to exclude - or no arguments at all to lint all blade templates.";
 
@@ -23,6 +24,7 @@ class ProseViewLinter extends Command
         $directoriesToExclude = $this->option("exclude") !== null ? explode(",", $this->option("exclude")) : [];
 
         $outputAsJson = $this->option("json") ? true : false;
+        $verbose = $this->option("verbose") ? true : false;
 
         if ($singleBladeTemplate === null && empty($directoriesToExclude)) {
             if (!$this->confirm("Are you sure you want to lint all blade files in your application?")) {
@@ -68,11 +70,14 @@ class ProseViewLinter extends Command
                 $progressBar->advance();
 
                 $filePath = $viewLinter->createLintableCopy($templateToLint);
-                $viewLinter->lintFile($filePath, $templateToLint);
+                $viewLinter->lintFile($filePath, "h");
             } catch (LinterException $linterException) {
                 $results = array_merge($results, $linterException->getResult()->toArray());
             } catch (\Exception $exception) {
                 $this->warn("({$templateToLint}) Unexpected error.");
+                if ($verbose) {
+                    $this->line($exception->getMessage());
+                }
             } finally {
                 $viewLinter->deleteLintableCopy();
             }
@@ -90,7 +95,7 @@ class ProseViewLinter extends Command
                 $filePath = storage_path("linting_result_" . date("Y-m-d-H-i-s") . ".json");
                 File::put($filePath, json_encode($results, JSON_UNESCAPED_SLASHES));
 
-            $this->warn("{$totalHints} linting hints were found.");
+                $this->warn("{$totalHints} linting hints were found.");
                 $this->warn("For detail, check results in file");
                 $this->warn($filePath);
             } else {
@@ -103,6 +108,15 @@ class ProseViewLinter extends Command
         } else {
             $this->info("✅ No errors, warnings or suggestions found.");
         }
+
+        $this->info(
+            "Applied styles: " .
+            collect(config('laravel-prose-linter.styles'))
+                ->map(function ($style) {
+                    return Str::afterLast($style, "\\");
+                })
+                ->implode(", ")
+        );
 
         $this->info("🏁 Finished linting in {$lintingDuration} seconds.");
 
