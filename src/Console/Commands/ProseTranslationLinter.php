@@ -2,50 +2,60 @@
 
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
+use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
 use Illuminate\Console\Command;
 use Beyondcode\LaravelProseLinter\LaravelProseLinter;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 
 class ProseTranslationLinter extends Command
 {
-    protected $signature = 'lint:translation {namespace?}';
+    protected $signature = 'lint:translation {namespace?* : Translation namespace to lint} {--json : No CLI output. Linting result is stored in storage/}';
 
-    protected $description = "Lints all translations ";
+    protected $description = "Lints english translations with the Errata AI Vale Linter. Provide either one or several translation namespaces as argument (e.g. 'auth validation') or no argument to lint all translations.";
 
     public function handle()
     {
-        // toDo: namespace
-        $this->info("🗣  Start linting translations");
+        $translationLinter = new TranslationLinter();
 
-        $linter = new TranslationLinter();
+        $namespaces = $this->argument("namespace");
+        $verbose = $this->option("verbose");
 
-        $linter->lintAll();
+        $namespacesToLint = empty($namespaces) ? $translationLinter->getTranslationFiles() : $namespaces;
+        $totalNamespacesToLint = count($namespacesToLint);
 
-        if ($linter->hasErrors()) {
-            // go through namespaces
-            foreach ($linter->getResults() as $namespaceKey => $results) {
+        $this->info("🗣  Start linting ...");
+        $startTime = microtime(true);
 
-                // go through translations in namespace
-                foreach ($results as $lintingResult) {
+        // create progress bar
+        $progressBar = $this->output->createProgressBar($totalNamespacesToLint);
 
-                    $this->newLine();
-                    $this->warn("{$namespaceKey}.{$lintingResult->getTextIdentifier()}:");
+        $results = [];
+        foreach ($namespacesToLint as $namespaceToLint) {
 
-                    // go through hints in translation linting result
-                    foreach($lintingResult->getHints() as $hint) {
-                        $this->line($hint->toCliOutput());
-                    }
-
+            try {
+                $results[] = $translationLinter->lintNamespace($namespaceToLint);
+                $progressBar->advance();
+            } catch (\Exception $exception) {
+                $this->warn("({$namespaceToLint}) Unexpected error.");
+                if ($verbose) {
+                    $this->line($exception->getMessage());
                 }
-
-                $this->newLine(2);
-
             }
-        } else {
-            $this->info("✅ No errors, warnings or suggestions found.");
+
         }
 
-        $this->info("🏁 Finished linting.");
+        $tableResults = Arr::flatten($results, 2);
+
+        $totalHints = count($tableResults);
+        $this->table(
+            ['Namespace', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
+            $tableResults
+        );
+        $this->warn("{$totalHints} linting hints were found.");
+
+        // todo finish output
     }
 
 }

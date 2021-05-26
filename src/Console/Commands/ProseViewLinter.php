@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 
 class ProseViewLinter extends Command
 {
-    protected $signature = 'lint:blade {bladeTemplate? : Template key for a single blade template} {--exclude= : directories to exclude in format dir1,dir2,dir3 } {--json}';
+    protected $signature = 'lint:blade {bladeTemplate? : Template key for a single blade template} {--exclude= : directories to exclude in format dir1,dir2,dir3 } {--json : No CLI output. Linting result is stored in storage/ }';
 
     protected $description = "Lints blade templates with the Errata AI Vale Linter. Provide either a single blade template to lint or directories to exclude - or no arguments at all to lint all blade templates.";
 

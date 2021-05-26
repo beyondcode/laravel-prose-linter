@@ -4,6 +4,7 @@ namespace Beyondcode\LaravelProseLinter\Linter;
 
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 class Vale
@@ -17,9 +18,27 @@ class Vale
         $this->writeValeIni();
     }
 
-    public function lintString()
+    public function lintString($textToLint, $textIdentifier = null)
     {
+        if(!is_string($textToLint)) return; // TODO
 
+        $process = Process::fromShellCommandline(
+            'vale --output=JSON --ext=".md" "' . $textToLint . '"'
+        );
+        $process->setWorkingDirectory($this->valePath);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new ProcessFailedException($process);
+        }
+
+        $result = json_decode($process->getOutput(), true);
+
+        if (!empty($result)) {
+            throw LinterException::withResult($result, $textIdentifier ?? "Text");
+        } elseif ($result === null || !is_array($result)) {
+            throw new LinterException("Invalid vale output.");
+        }
     }
 
     public function lintFile($filePath, $textIdentifier)
@@ -47,6 +66,10 @@ class Vale
     {
         $configuredStyles = config('laravel-prose-linter.styles');
 
+        if (count($configuredStyles) == 0) {
+            throw new \Exception("No styles defined. Please check your config (laravel-prose-linter.styles)!");
+        }
+
         $styles = [];
         foreach ($configuredStyles as $configuredStyle) {
             $styleClass = new $configuredStyle();
@@ -63,13 +86,9 @@ class Vale
     {
         $appliedStyles = $this->getAppliedStyles();
 
-        if (count($appliedStyles) == 0) {
-            throw new \Exception("No styles defined. Please check your config (laravel-prose-linter.styles)!");
-        }
-
         $valeIni = "
 StylesPath = styles
-[*.{html}]
+[*.{html,md}]
 BasedOnStyles = {$appliedStyles}
 ";
         File::put($this->valePath . "/.vale.ini", $valeIni);

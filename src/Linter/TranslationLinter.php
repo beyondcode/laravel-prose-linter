@@ -2,13 +2,14 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class TranslationLinter extends Linter
+class TranslationLinter extends Vale
 {
 
     public function getTranslationFiles()
@@ -40,41 +41,28 @@ class TranslationLinter extends Linter
         return $namespaces->toArray();
     }
 
-    public function lintAll()
-    {
-        // toDo all without namespace
-        $namespaceTranslations = ["auth" => $this->readTranslationArray("auth")];
-
-        $this->results = [];
-        foreach ($namespaceTranslations as $namespaceKey => $translations) {
-
-            $lintingResult = $this->lintTranslations($translations);
-
-            $this->results[$namespaceKey] = $lintingResult;
-        }
-
-        return $this->results;
-    }
-
     public function readTranslationArray(string $namespace)
     {
+        # TODO flatten, e.g. validation
         return __($namespace);
     }
 
-    public function lintTranslations(array $translations): array
+    public function lintNamespace(string $namespace): array
     {
-        $errors = [];
+        $translations = $this->readTranslationArray($namespace);
+
+        $results = [];
         foreach ($translations as $translationKey => $translationText) {
             try {
-                $this->lintSingleTranslation($translationKey, $translationText);
+                $this->lintString($translationText, "{$namespace}.{$translationKey}");
             } catch (LinterException $linterException) {
-                $errors[] = $linterException->getResult();
+                $results[] = $linterException->getResult()->toArray();
             } catch (ProcessFailedException $processFailedException) {
                 break; // todo
             }
         }
 
-        return $errors;
+        return $results;
     }
 
     public function lintSingleTranslation(string $translationKey, string $translationText)
