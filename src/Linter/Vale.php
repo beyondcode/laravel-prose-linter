@@ -64,7 +64,7 @@ class Vale
      */
     protected function getAppliedStyles()
     {
-        $configuredStyles = config('linter.styles');
+        $configuredStyles = config('linter.styles', [\Beyondcode\LaravelProseLinter\Styles\Vale::class]);
 
         if (count($configuredStyles) == 0) {
             throw new \Exception("No styles defined. Please check your config (linter.styles)!");

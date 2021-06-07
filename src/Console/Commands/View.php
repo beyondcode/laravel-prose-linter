@@ -65,7 +65,7 @@ class View extends Linter
                 $progressBar->advance();
 
                 $filePath = $viewLinter->createLintableCopy($templateToLint);
-                $viewLinter->lintFile($filePath, "h");
+                $viewLinter->lintFile($filePath, $templateToLint);
             } catch (LinterException $linterException) {
                 $results = array_merge($results, $linterException->getResult()->toArray());
             } catch (\Exception $exception) {
