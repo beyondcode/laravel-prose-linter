@@ -49,10 +49,12 @@ class ProseTranslationLinter extends Command
         $tableResults = Arr::flatten($results, 2);
 
         $totalHints = count($tableResults);
+        $this->newLine();
         $this->table(
             ['Namespace', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
             $tableResults
         );
+        $this->newLine();
         $this->warn("{$totalHints} linting hints were found.");
 
         // todo finish output

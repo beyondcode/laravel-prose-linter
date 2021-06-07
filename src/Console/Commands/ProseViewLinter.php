@@ -62,7 +62,6 @@ class ProseViewLinter extends Command
         // create progress bar
         $progressBar = $this->output->createProgressBar($totalFilesToLint);
 
-
         $results = [];
         foreach ($templatesToLint as $templateToLint) {
 

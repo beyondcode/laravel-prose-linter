@@ -33,9 +33,12 @@ class ViewLinter extends Vale
 
         // filter dot files and extract template keys
         $bladeTemplateKeys = $bladeTemplateFiles->map(function ($bladeTemplateFile) use ($excludedDirectories) {
-            if (Str::startsWith($bladeTemplateFile, ".")) return false;
 
-            // get filename
+            // check filename for dot files
+            $fileName = Str::afterLast($bladeTemplateFile, "/");
+            if (Str::startsWith($fileName, ".")) return false;
+
+            // check for included / excluded directories
             $bladePath = Str::afterLast($bladeTemplateFile, "views/");
             if (!empty($excludedDirectories) && Str::startsWith($bladePath, $excludedDirectories)) return false;
 

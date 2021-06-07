@@ -20,7 +20,7 @@ class Vale
 
     public function lintString($textToLint, $textIdentifier = null)
     {
-        if(!is_string($textToLint)) return; // TODO
+        if (!is_string($textToLint)) return; // TODO
 
         $process = Process::fromShellCommandline(
             'vale --output=JSON --ext=".md" "' . $textToLint . '"'
@@ -64,7 +64,7 @@ class Vale
      */
     protected function getAppliedStyles()
     {
-        $configuredStyles = config('laravel-prose-linter.styles');
+        $configuredStyles = config('linter.styles');
 
         if (count($configuredStyles) == 0) {
             throw new \Exception("No styles defined. Please check your config (laravel-prose-linter.styles)!");
@@ -79,12 +79,31 @@ class Vale
         return implode(",", $styles);
     }
 
+    private function writeStyles()
+    {
+        # clear temporary vale style directory
+        File::deleteDirectory(__DIR__ . "/../vale-ai/bin/styles");
+
+        # copy resources from application styles if existing
+        if (File::exists(resource_path('lang/vendor/laravel-prose-linter'))) {
+            File::copyDirectory(
+                resource_path('lang/vendor/laravel-prose-linter'),
+                __DIR__ . "/../vale-ai/bin/styles"
+            );
+        } # copy resources from default
+        else {
+            File::copyDirectory(__DIR__ . '/../../resources/styles', __DIR__ . "/../vale-ai/bin/styles");
+        }
+    }
+
     /**
      * Create .vale.ini during runtime
      */
     public function writeValeIni()
     {
         $appliedStyles = $this->getAppliedStyles();
+
+        $this->writeStyles();
 
         $valeIni = "
 StylesPath = styles

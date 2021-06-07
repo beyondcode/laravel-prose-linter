@@ -24,7 +24,7 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/config.php' => config_path('laravel-prose-linter.php'),
+                __DIR__ . '/../config/config.php' => config_path('linter.php'),
             ], 'config');
 
             // Publishing the views.
@@ -42,7 +42,12 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
                 __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-prose-linter'),
             ], 'lang');*/
 
-//             Registering package commands.
+            # Publish the style files
+            $this->publishes([
+                __DIR__ . '/../resources/styles' => resource_path('lang/vendor/laravel-prose-linter'),
+            ], 'linting-styles');
+
+            # Register package commands
             $this->commands([
                 ProseTranslationLinter::class,
                 ProseViewLinter::class,
