@@ -9,12 +9,38 @@ use Illuminate\Support\Str;
 class LintingHint
 {
 
+    /**
+     * @var string Library condition that produced the hint, e.g. "write-good.TooWordy"
+     */
     private string $libraryCheck;
+
+    /**
+     * @var int
+     */
     private int $line;
+
+    /**
+     * @var int
+     */
     private int $position;
+
+    /**
+     * @var string
+     */
     private string $message;
+
+    /**
+     * @var string
+     */
     private string $severity;
 
+    /**
+     * @param string $libraryCheck
+     * @param int $line
+     * @param int $position
+     * @param string $message
+     * @param string $severity
+     */
     public function __construct(string $libraryCheck, int $line, int $position, string $message, string $severity)
     {
         $this->libraryCheck = $libraryCheck;
@@ -24,27 +50,27 @@ class LintingHint
         $this->severity = $severity;
     }
 
+    /**
+     * @param array $result
+     * @return LintingHint
+     */
     public static function fromJson(array $result): LintingHint
     {
         $hintData = $result;
 
-        $hint = new LintingHint(
+        return new LintingHint(
             $hintData["Check"],
             $hintData['Line'],
             $hintData['Span'][0],
             $hintData["Message"],
             $hintData["Severity"]
         );
-
-        return $hint;
     }
 
-    public function toCLIOutput()
-    {
-        return "[{$this->severity}] {$this->libraryCheck} at position {$this->line}, {$this->position}: {$this->message}";
-    }
-
-    public function toArray()
+    /**
+     * @return array
+     */
+    public function toArray(): array
     {
         return [
             "line" => $this->line,
@@ -56,7 +82,10 @@ class LintingHint
     }
 
 
-    public function toFlatArray()
+    /**
+     * @return array
+     */
+    public function toFlatArray(): array
     {
         return [
             $this->line,

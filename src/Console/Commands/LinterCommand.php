@@ -1,13 +1,21 @@
 <?php
+
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 
-class Linter extends Command {
+abstract class LinterCommand extends Command
+{
 
-    protected function finishLintingOutput(array $results, bool $outputAsJson, int $lintingDuration) {
+    /**
+     * @param array $results
+     * @param bool $outputAsJson
+     * @param int $lintingDuration
+     */
+    protected function finishLintingOutput(array $results, bool $outputAsJson, int $lintingDuration)
+    {
         $this->newLine();
 
         $totalHints = count($results);

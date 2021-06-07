@@ -2,9 +2,10 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+use Illuminate\Support\Collection;
 use Symfony\Component\Process\Process;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -15,14 +16,14 @@ class TranslationLinter extends Vale
     public function getTranslationFiles()
     {
         $languageDirectory = resource_path("lang/en");
-        $it = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($languageDirectory));
+        $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($languageDirectory));
 
         $translationFiles = new Collection();
 
-        # collect blade files recursively
+        // collect blade files recursively
         $it->rewind();
-        while ($it->valid()) {
 
+        while ($it->valid()) {
             if (!$it->isDot()) {
                 $translationFiles->add($it->key());
             }
@@ -30,9 +31,12 @@ class TranslationLinter extends Vale
             $it->next();
         }
 
-        # extract namespaces
+        // extract namespaces
         $namespaces = $translationFiles->map(function ($file) {
-            if (Str::startsWith($file, ".")) return false;
+            if (Str::startsWith($file, ".")) {
+                return false;
+            }
+
             $fileName = Str::afterLast($file, "lang/en/");
 
             return Str::before($fileName, ".php");
@@ -43,7 +47,7 @@ class TranslationLinter extends Vale
 
     public function readTranslationArray(string $namespace)
     {
-        # TODO flatten, e.g. validation
+        // TODO flatten, e.g. validation
         return __($namespace);
     }
 

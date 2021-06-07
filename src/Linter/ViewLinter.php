@@ -2,55 +2,31 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Symfony\Component\Process\Process;
-use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
-use Symfony\Component\Process\Exception\ProcessFailedException;
+use Illuminate\Support\Collection;
+use Symfony\Component\Finder\Finder;
+use Illuminate\Support\Facades\File;
+use Symfony\Component\Finder\SplFileInfo;
 
 class ViewLinter extends Vale
 {
 
     public function readBladeKeys($excludedDirectories)
     {
+        $viewFinder = (new Finder())
+            ->ignoreDotFiles(true)
+            ->in(resource_path("views"))
+            ->exclude($excludedDirectories)
+            ->name('*.blade.php');
 
-        $viewsDirectory = resource_path("views");
-        $it = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($viewsDirectory));
+        $bladeTemplateKeys = new Collection();
 
-        $bladeTemplateFiles = new Collection();
+        /** @var SplFileInfo $viewFile */
+        foreach ($viewFinder as $viewFile) {
+            $viewName = $viewFile->getRelativePath() . '.' . $viewFile->getBasename('.blade.php');
 
-        // collect blade files recursively
-        $it->rewind();
-        while ($it->valid()) {
-
-            if (!$it->isDot()) {
-                $bladeTemplateFiles->add($it->key());
-            }
-
-            $it->next();
+            $bladeTemplateKeys->add(Str::replace('/', '.', $viewName));
         }
-
-        // filter dot files and extract template keys
-        $bladeTemplateKeys = $bladeTemplateFiles->map(function ($bladeTemplateFile) use ($excludedDirectories) {
-
-            // check filename for dot files
-            $fileName = Str::afterLast($bladeTemplateFile, "/");
-            if (Str::startsWith($fileName, ".")) return false;
-
-            // check for included / excluded directories
-            $bladePath = Str::afterLast($bladeTemplateFile, "views/");
-            if (!empty($excludedDirectories) && Str::startsWith($bladePath, $excludedDirectories)) return false;
-
-            // extract template key
-            $bladePath = Str::before($bladePath, ".blade.php");
-
-            // replace slashes with dots
-            return Str::replace("/", ".", $bladePath);
-
-        })->reject(function ($bladeTemplateFile) {
-            return $bladeTemplateFile === false;
-        });
 
         return $bladeTemplateKeys;
     }
@@ -58,20 +34,12 @@ class ViewLinter extends Vale
 
     public function deleteLintableCopy()
     {
-        $process = Process::fromShellCommandline(
-            'rm -rf tmp'
-        );
-        $process->setWorkingDirectory($this->valePath);
-        $process->run();
+        File::deleteDirectory($this->valePath . "/tmp");
     }
 
     public function createLintableCopy($templateKey): string
     {
-        $process = Process::fromShellCommandline(
-            'mkdir tmp'
-        );
-        $process->setWorkingDirectory($this->valePath);
-        $process->run();
+        File::makeDirectory($this->valePath . "/tmp");
 
         // copy a view to the tmp
         $viewPath = view($templateKey)->getPath();

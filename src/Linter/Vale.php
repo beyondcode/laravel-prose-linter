@@ -2,25 +2,42 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
+use Exception;
 use Illuminate\Support\Facades\File;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
+/**
+ * Class Vale
+ * @package Beyondcode\LaravelProseLinter\Linter
+ */
 class Vale
 {
-    protected array $results;
+    /**
+     * @var string
+     */
     protected string $valePath;
 
+    /**
+     * Vale constructor.
+     */
     public function __construct()
     {
-        $this->valePath = base_path("vendor/beyondcode/laravel-prose-linter/src/vale-ai/bin");
+        $this->valePath = __DIR__ . "/../../bin/vale-ai";
         $this->writeValeIni();
     }
 
+    /**
+     * @param $textToLint
+     * @param null $textIdentifier
+     * @throws LinterException
+     */
     public function lintString($textToLint, $textIdentifier = null)
     {
-        if (!is_string($textToLint)) return; // TODO
+        if (!is_string($textToLint)) {
+            return; // TODO
+        }
 
         $process = Process::fromShellCommandline(
             'vale --output=JSON --ext=".md" "' . $textToLint . '"'
@@ -41,6 +58,11 @@ class Vale
         }
     }
 
+    /**
+     * @param $filePath
+     * @param $textIdentifier
+     * @throws LinterException
+     */
     public function lintFile($filePath, $textIdentifier)
     {
         $process = Process::fromShellCommandline(
@@ -55,7 +77,7 @@ class Vale
         if (!empty($result)) {
             throw LinterException::withResult($result, $textIdentifier);
         } elseif ($result === null || !is_array($result)) {
-            throw new \Exception("Invalid vale output. " . print_r($process->getOutput(), true));
+            throw new Exception("Invalid vale output. " . print_r($process->getOutput(), true));
         }
     }
 
@@ -67,7 +89,7 @@ class Vale
         $configuredStyles = config('linter.styles', [\Beyondcode\LaravelProseLinter\Styles\Vale::class]);
 
         if (count($configuredStyles) == 0) {
-            throw new \Exception("No styles defined. Please check your config (linter.styles)!");
+            throw new Exception("No styles defined. Please check your config (linter.styles)!");
         }
 
         $styles = [];
@@ -79,20 +101,25 @@ class Vale
         return implode(",", $styles);
     }
 
+    /**
+     *
+     */
     private function writeStyles()
     {
-        # clear temporary vale style directory
-        File::deleteDirectory(__DIR__ . "/../vale-ai/bin/styles");
+        $stylePath = $this->valePath . "/styles";
 
-        # copy resources from application styles if existing
+        // clear temporary vale style directory
+        File::deleteDirectory($stylePath);
+
+        // copy resources from application styles if existing
         if (File::exists(resource_path('lang/vendor/laravel-prose-linter'))) {
             File::copyDirectory(
                 resource_path('lang/vendor/laravel-prose-linter'),
-                __DIR__ . "/../vale-ai/bin/styles"
+                $stylePath
             );
-        } # copy resources from default
-        else {
-            File::copyDirectory(__DIR__ . '/../../resources/styles', __DIR__ . "/../vale-ai/bin/styles");
+        } else {
+            // copy resources from default
+            File::copyDirectory(__DIR__ . '/../../resources/styles', $stylePath);
         }
     }
 
@@ -111,11 +138,6 @@ StylesPath = styles
 BasedOnStyles = {$appliedStyles}
 ";
         File::put($this->valePath . "/.vale.ini", $valeIni);
-    }
-
-    public function restoreIni()
-    {
-        File::copy($this->valePath . "/.vale_default.ini", $this->valePath . "/.vale.ini");
     }
 
 

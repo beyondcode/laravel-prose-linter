@@ -2,10 +2,11 @@
 
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
+use Exception;
 use Beyondcode\LaravelProseLinter\Linter\ViewLinter;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 
-class View extends Linter
+class LintViewCommand extends LinterCommand
 {
     protected $signature = 'lint:blade {bladeTemplate? : Template key for a single blade template} {--exclude= : directories to exclude in format dir1,dir2,dir3 } {--json : No CLI output. Linting result is stored in storage/ }';
 
@@ -68,7 +69,7 @@ class View extends Linter
                 $viewLinter->lintFile($filePath, $templateToLint);
             } catch (LinterException $linterException) {
                 $results = array_merge($results, $linterException->getResult()->toArray());
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->warn("({$templateToLint}) Unexpected error.");
                 if ($verbose) {
                     $this->line($exception->getMessage());
@@ -82,7 +83,7 @@ class View extends Linter
         $lintingDuration = round(microtime(true) - $startTime, 2);
         $progressBar->finish();
 
-        $this->finishLintingOutput($results,  $outputAsJson,  $lintingDuration);
+        $this->finishLintingOutput($results, $outputAsJson, $lintingDuration);
     }
 
 
