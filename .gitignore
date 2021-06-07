@@ -1,3 +1,3 @@
 vendor/
-src/vale-ai/bin/.vale.ini
-src/vale-ai/bin/styles
+bin/vale-ai/.vale.ini
+bin/vale-ai/styles
