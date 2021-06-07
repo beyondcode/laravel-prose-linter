@@ -26,11 +26,11 @@ class LintViewCommand extends LinterCommand
         if ($singleBladeTemplate === null && empty($directoriesToExclude)) {
             if (!$this->confirm("Are you sure you want to lint all blade files in your application?")) {
                 $this->line("❌ Linting aborted.");
-                return;
+                return 1;
             }
         } elseif ($singleBladeTemplate !== null && !empty($directoriesToExclude)) {
             $this->error("Invalid parameters. Please provide either a single template key to lint or directories to exclude or no further options to lint all blade templates.");
-            return;
+            return 2;
         }
 
         // collect blade files to lint

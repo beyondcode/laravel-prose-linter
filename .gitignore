@@ -1,3 +1,4 @@
 vendor/
 bin/vale-ai/.vale.ini
 bin/vale-ai/styles
+.phpunit.cache/

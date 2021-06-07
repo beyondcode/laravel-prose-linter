@@ -45,6 +45,7 @@ class LintTranslationCommand extends LinterCommand
 
         }
 
+
         $tableResults = Arr::flatten($results, 2);
 
         $lintingDuration = round(microtime(true) - $startTime, 2);
