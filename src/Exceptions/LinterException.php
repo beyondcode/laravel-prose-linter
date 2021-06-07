@@ -2,10 +2,10 @@
 
 namespace Beyondcode\LaravelProseLinter\Exceptions;
 
-use Beyondcode\LaravelProseLinter\Linter\LintingHint;
+use Exception;
 use Beyondcode\LaravelProseLinter\Linter\LintingResult;
 
-class LinterException extends \Exception
+class LinterException extends Exception
 {
     public LintingResult $result;
 

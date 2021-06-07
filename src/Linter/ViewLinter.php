@@ -2,14 +2,11 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use Symfony\Component\Finder\Finder;
+use Illuminate\Support\Facades\File;
 use Symfony\Component\Finder\SplFileInfo;
-use Symfony\Component\Process\Process;
-use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ViewLinter extends Vale
 {

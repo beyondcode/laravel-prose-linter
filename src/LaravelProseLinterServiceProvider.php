@@ -2,10 +2,10 @@
 
 namespace Beyondcode\LaravelProseLinter;
 
-use Beyondcode\LaravelProseLinter\Console\Commands\LintTranslationCommand;
-use Beyondcode\LaravelProseLinter\Console\Commands\LintViewCommand;
-use Beyondcode\LaravelProseLinter\Console\Commands\RestoreConfigurationCommand;
 use Illuminate\Support\ServiceProvider;
+use Beyondcode\LaravelProseLinter\Console\Commands\LintViewCommand;
+use Beyondcode\LaravelProseLinter\Console\Commands\LintTranslationCommand;
+use Beyondcode\LaravelProseLinter\Console\Commands\RestoreConfigurationCommand;
 
 class LaravelProseLinterServiceProvider extends ServiceProvider
 {
@@ -27,8 +27,7 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
             // Register package commands
             $this->commands([
                 LintTranslationCommand::class,
-                LintViewCommand::class,
-                RestoreConfigurationCommand::class
+                LintViewCommand::class
             ]);
         }
     }

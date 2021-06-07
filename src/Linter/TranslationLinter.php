@@ -2,9 +2,10 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+use Illuminate\Support\Collection;
 use Symfony\Component\Process\Process;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -15,7 +16,7 @@ class TranslationLinter extends Vale
     public function getTranslationFiles()
     {
         $languageDirectory = resource_path("lang/en");
-        $it = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($languageDirectory));
+        $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($languageDirectory));
 
         $translationFiles = new Collection();
 

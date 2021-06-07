@@ -2,9 +2,8 @@
 
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
+use Exception;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\File;
 use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
 
 class LintTranslationCommand extends LinterCommand
@@ -17,6 +16,7 @@ class LintTranslationCommand extends LinterCommand
     {
         $translationLinter = new TranslationLinter();
 
+        // collect command input
         $namespaces = $this->argument("namespace");
         $outputAsJson = $this->option("json") ? true : false;
         $verbose = $this->option("verbose");
@@ -36,7 +36,7 @@ class LintTranslationCommand extends LinterCommand
             try {
                 $results[] = $translationLinter->lintNamespace($namespaceToLint);
                 $progressBar->advance();
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
                 $this->warn("({$namespaceToLint}) Unexpected error.");
                 if ($verbose) {
                     $this->line($exception->getMessage());
@@ -50,7 +50,7 @@ class LintTranslationCommand extends LinterCommand
         $lintingDuration = round(microtime(true) - $startTime, 2);
         $progressBar->finish();
 
-        $this->finishLintingOutput($tableResults,  $outputAsJson,  $lintingDuration);
+        $this->finishLintingOutput($tableResults, $outputAsJson, $lintingDuration);
     }
 
 }
