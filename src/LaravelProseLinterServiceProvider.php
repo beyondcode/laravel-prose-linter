@@ -2,9 +2,9 @@
 
 namespace Beyondcode\LaravelProseLinter;
 
-use Beyondcode\LaravelProseLinter\Console\Commands\Translation;
-use Beyondcode\LaravelProseLinter\Console\Commands\View;
-use Beyondcode\LaravelProseLinter\Console\Commands\RestoreConfiguration;
+use Beyondcode\LaravelProseLinter\Console\Commands\LintTranslationCommand;
+use Beyondcode\LaravelProseLinter\Console\Commands\LintViewCommand;
+use Beyondcode\LaravelProseLinter\Console\Commands\RestoreConfigurationCommand;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelProseLinterServiceProvider extends ServiceProvider
@@ -14,44 +14,21 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        /*
-         * Optional methods to load your package assets
-         */
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'laravel-prose-linter');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-prose-linter');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
-
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('linter.php'),
             ], 'config');
 
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__.'/../resources/views' => resource_path('views/vendor/laravel-prose-linter'),
-            ], 'views');*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__.'/../resources/assets' => public_path('vendor/laravel-prose-linter'),
-            ], 'assets');*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__.'/../resources/lang' => resource_path('lang/vendor/laravel-prose-linter'),
-            ], 'lang');*/
-
-            # Publish the style files
+            // Publish the style files
             $this->publishes([
                 __DIR__ . '/../resources/styles' => resource_path('lang/vendor/laravel-prose-linter'),
             ], 'linting-styles');
 
-            # Register package commands
+            // Register package commands
             $this->commands([
-                Translation::class,
-                View::class,
-                RestoreConfiguration::class
+                LintTranslationCommand::class,
+                LintViewCommand::class,
+                RestoreConfigurationCommand::class
             ]);
         }
     }
@@ -63,10 +40,5 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
     {
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'laravel-prose-linter');
-
-        // Register the main class to use with the facade
-        $this->app->singleton('laravel-prose-linter', function () {
-            return new LaravelProseLinter;
-        });
     }
 }

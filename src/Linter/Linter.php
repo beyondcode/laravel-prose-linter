@@ -9,7 +9,7 @@ abstract class Linter
 
     public function __construct()
     {
-        $this->valePath = base_path("vendor/beyondcode/laravel-prose-linter/src/vale-ai/bin");
+        $this->valePath = __DIR__ . "/../../bin/valet-ai";
     }
 
     public abstract function lintAll();
@@ -22,10 +22,7 @@ abstract class Linter
 
     public function hasErrors(): bool
     {
-        if (count($this->results) == 0) {
-            return false;
-        }
-        return true;
+        return count($this->results) > 0;
     }
 
 

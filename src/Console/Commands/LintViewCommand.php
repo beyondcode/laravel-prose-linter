@@ -5,7 +5,7 @@ namespace Beyondcode\LaravelProseLinter\Console\Commands;
 use Beyondcode\LaravelProseLinter\Linter\ViewLinter;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 
-class View extends Linter
+class LintViewCommand extends LinterCommand
 {
     protected $signature = 'lint:blade {bladeTemplate? : Template key for a single blade template} {--exclude= : directories to exclude in format dir1,dir2,dir3 } {--json : No CLI output. Linting result is stored in storage/ }';
 

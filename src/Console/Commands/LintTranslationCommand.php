@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
 
-class Translation extends Linter
+class LintTranslationCommand extends LinterCommand
 {
     protected $signature = 'lint:translation {namespace?* : Translation namespace to lint} {--json : No CLI output. Linting result is stored in storage/}';
 

@@ -14,13 +14,15 @@ class Vale
 
     public function __construct()
     {
-        $this->valePath = base_path("vendor/beyondcode/laravel-prose-linter/src/vale-ai/bin");
+        $this->valePath = __DIR__ . "/../../bin/vale-ai";
         $this->writeValeIni();
     }
 
     public function lintString($textToLint, $textIdentifier = null)
     {
-        if (!is_string($textToLint)) return; // TODO
+        if (!is_string($textToLint)) {
+            return; // TODO
+        }
 
         $process = Process::fromShellCommandline(
             'vale --output=JSON --ext=".md" "' . $textToLint . '"'
@@ -81,18 +83,20 @@ class Vale
 
     private function writeStyles()
     {
-        # clear temporary vale style directory
-        File::deleteDirectory(__DIR__ . "/../vale-ai/bin/styles");
+        $stylePath = $this->valePath . "/styles";
 
-        # copy resources from application styles if existing
+        // clear temporary vale style directory
+        File::deleteDirectory($stylePath);
+
+        // copy resources from application styles if existing
         if (File::exists(resource_path('lang/vendor/laravel-prose-linter'))) {
             File::copyDirectory(
                 resource_path('lang/vendor/laravel-prose-linter'),
-                __DIR__ . "/../vale-ai/bin/styles"
+                $stylePath
             );
-        } # copy resources from default
-        else {
-            File::copyDirectory(__DIR__ . '/../../resources/styles', __DIR__ . "/../vale-ai/bin/styles");
+        } else {
+            // copy resources from default
+            File::copyDirectory(__DIR__ . '/../../resources/styles', $stylePath);
         }
     }
 

@@ -8,7 +8,7 @@ use Beyondcode\LaravelProseLinter\Styles\WriteGood;
 use Illuminate\Console\Command;
 use Beyondcode\LaravelProseLinter\LaravelProseLinter;
 
-class RestoreConfiguration extends Command
+class RestoreConfigurationCommand extends Command
 {
     protected $signature = 'lint:restore';
 

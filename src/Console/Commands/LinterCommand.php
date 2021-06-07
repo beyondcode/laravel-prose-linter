@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 
-class Linter extends Command {
+abstract class LinterCommand extends Command {
 
     protected function finishLintingOutput(array $results, bool $outputAsJson, int $lintingDuration) {
         $this->newLine();
