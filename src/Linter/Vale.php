@@ -67,7 +67,7 @@ class Vale
         $configuredStyles = config('linter.styles');
 
         if (count($configuredStyles) == 0) {
-            throw new \Exception("No styles defined. Please check your config (laravel-prose-linter.styles)!");
+            throw new \Exception("No styles defined. Please check your config (linter.styles)!");
         }
 
         $styles = [];

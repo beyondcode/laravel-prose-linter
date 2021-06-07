@@ -2,14 +2,10 @@
 
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
-use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
-use Illuminate\Console\Command;
 use Beyondcode\LaravelProseLinter\Linter\ViewLinter;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
+use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 
-class ProseViewLinter extends Command
+class View extends Linter
 {
     protected $signature = 'lint:blade {bladeTemplate? : Template key for a single blade template} {--exclude= : directories to exclude in format dir1,dir2,dir3 } {--json : No CLI output. Linting result is stored in storage/ }';
 
@@ -85,40 +81,9 @@ class ProseViewLinter extends Command
 
         $lintingDuration = round(microtime(true) - $startTime, 2);
         $progressBar->finish();
-        $this->newLine();
 
-        $totalHints = count($results);
-
-        if ($totalHints > 0) {
-            if ($outputAsJson) {
-                $filePath = storage_path("linting_result_" . date("Y-m-d-H-i-s") . ".json");
-                File::put($filePath, json_encode($results, JSON_UNESCAPED_SLASHES));
-
-                $this->warn("{$totalHints} linting hints were found.");
-                $this->warn("For detail, check results in file");
-                $this->warn($filePath);
-            } else {
-                $this->table(
-                    ['Template Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
-                    $results
-                );
-                $this->warn("{$totalHints} linting hints were found.");
-            }
-        } else {
-            $this->info("✅ No errors, warnings or suggestions found.");
-        }
-
-        $this->info(
-            "Applied styles: " .
-            collect(config('laravel-prose-linter.styles'))
-                ->map(function ($style) {
-                    return Str::afterLast($style, "\\");
-                })
-                ->implode(", ")
-        );
-
-        $this->info("🏁 Finished linting in {$lintingDuration} seconds.");
-
+        $this->finishLintingOutput($results,  $outputAsJson,  $lintingDuration);
     }
+
 
 }

@@ -2,14 +2,12 @@
 
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
-use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
-use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
-use Illuminate\Console\Command;
-use Beyondcode\LaravelProseLinter\LaravelProseLinter;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
 
-class ProseTranslationLinter extends Command
+class Translation extends Linter
 {
     protected $signature = 'lint:translation {namespace?* : Translation namespace to lint} {--json : No CLI output. Linting result is stored in storage/}';
 
@@ -20,6 +18,7 @@ class ProseTranslationLinter extends Command
         $translationLinter = new TranslationLinter();
 
         $namespaces = $this->argument("namespace");
+        $outputAsJson = $this->option("json") ? true : false;
         $verbose = $this->option("verbose");
 
         $namespacesToLint = empty($namespaces) ? $translationLinter->getTranslationFiles() : $namespaces;
@@ -48,16 +47,10 @@ class ProseTranslationLinter extends Command
 
         $tableResults = Arr::flatten($results, 2);
 
-        $totalHints = count($tableResults);
-        $this->newLine();
-        $this->table(
-            ['Namespace', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
-            $tableResults
-        );
-        $this->newLine();
-        $this->warn("{$totalHints} linting hints were found.");
+        $lintingDuration = round(microtime(true) - $startTime, 2);
+        $progressBar->finish();
 
-        // todo finish output
+        $this->finishLintingOutput($tableResults,  $outputAsJson,  $lintingDuration);
     }
 
 }
