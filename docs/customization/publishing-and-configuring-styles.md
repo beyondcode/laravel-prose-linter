@@ -1,8 +1,13 @@
+---
+title: Publishing and configuring styles
+order: 2
+---
+
 # Publishing and configuring styles
 
 Let's assume you want to use a style guide that implements the »Google Developer Documentation Style Guide« because you have documentation text in some blade templates.
 
-First you've got to publish the linting styles as well as the linting configuration like explained before. To integrate this style into your application, copy the `Google`directory of the [styles' repository](https://github.com/errata-ai/Google) to `resources/lang/vendor/laravel-prose-linter`.
+First you've got to publish the linting styles as well as the linting configuration like explained in [Installation](docs/laravel-prose-linter/getting-started/installation). To integrate this style into your application, copy the `Google` directory of the [styles' repository](https://github.com/errata-ai/Google) to `resources/lang/vendor/laravel-prose-linter`.
 
 Next up, create a class for your style in your Laravel app that implements the `Beyondcode\LaravelProseLinter\Styles\StyleInterface`:
 

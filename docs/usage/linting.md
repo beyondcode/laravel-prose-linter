@@ -1,6 +1,12 @@
-# Linting
+# Usage
 
-## Blade templates
+The package includes a default configuration of the linter based on the Vale and the WriteGood styles, so that you can start linting right away!
+
+The linter supports two different modes: translation linting and blade template linting.
+
+## Linting
+
+### Blade templates
 
 To lint all blade templates of your project, call the following command from your project root:
 
@@ -22,7 +28,7 @@ Or you exclude one or several view directories by using the `--exclude` option:
 ~ php artisan lint:blade --exclude=auth,vendor
 ```
 
-## Translations
+### Translations
 
 If you want to lint all translations of your application, open up your CLI in the Laravel project root and execute the following command:
 
@@ -44,7 +50,7 @@ If you want to lint the translations of multiple namespaces, add them as further
 
 * A translation namespace in Laravel is the name file of the file before the file extension where the translation array is returned. For example: The translations of the `passwords` namespace are located in `resources/lang/en/passwords.php` .
 
-## Output
+### Output
 
 Instead of evaluating the results in the CLI as a table you for further processing or storing by appending a `--json` flag to the command:
 
