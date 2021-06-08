@@ -60,10 +60,15 @@ class TranslationLinter extends Vale
     /**
      * @param string $namespace
      * @return array
+     * @throws LinterException
      */
     public function lintNamespace(string $namespace): array
     {
         $translations = $this->readTranslationArray($namespace);
+
+        if (!is_array($translations)) {
+            throw new LinterException("No translations found.");
+        }
 
         $results = [];
         foreach ($translations as $translationKey => $translationText) {

@@ -54,7 +54,7 @@ class LintTranslationCommandTest extends TestCase
     {
         $this->artisan('lint:translation idonotexist --verbose')
             ->expectsOutput('(idonotexist) Unexpected error.')
-            ->expectsOutput('foreach() argument must be of type array|object, string given');
+            ->expectsOutput('No translations found.');
     }
 
 }
