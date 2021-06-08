@@ -20,12 +20,38 @@ class Vale
     protected string $valePath;
 
     /**
-     * Vale constructor.
+     * @var string
+     */
+    protected string $valeExecutable;
+
+    /**
+     * @throws LinterException
      */
     public function __construct()
     {
         $this->valePath = __DIR__ . "/../../bin/vale-ai";
+        $this->resolveValeExecutable();
         $this->writeValeIni();
+    }
+
+    /**
+     * @throws LinterException
+     */
+    private function resolveValeExecutable()
+    {
+        switch (PHP_OS_FAMILY) {
+            case 'Darwin':
+                $this->valeExecutable = './vale-macos ';
+                break;
+            case 'Windows':
+                $this->valeExecutable = './vale.exe ';
+                break;
+            case 'Linux':
+                $this->valeExecutable = './vale-linux ';
+                break;
+            default:
+                throw new LinterException("Operating system is not supported: " . PHP_OS_FAMILY);
+        }
     }
 
     /**
@@ -40,7 +66,7 @@ class Vale
         }
 
         $process = Process::fromShellCommandline(
-            './vale --output=JSON --ext=".md" "' . $textToLint . '"'
+            $this->valeExecutable . ' --output=JSON --ext=".md" "' . $textToLint . '"'
         );
         $process->setWorkingDirectory($this->valePath);
         $process->run();
@@ -66,7 +92,7 @@ class Vale
     public function lintFile($filePath, $textIdentifier)
     {
         $process = Process::fromShellCommandline(
-            './vale --output=JSON ' . $filePath
+            $this->valeExecutable . ' --output=JSON ' . $filePath
         );
 
         $process->setWorkingDirectory($this->valePath);

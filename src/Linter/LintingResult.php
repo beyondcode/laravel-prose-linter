@@ -46,6 +46,9 @@ class LintingResult
         return $this->hints;
     }
 
+    /**
+     * @return array
+     */
     public function toArray(): array
     {
         $hints = [];

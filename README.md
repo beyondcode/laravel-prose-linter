@@ -1,4 +1,4 @@
-![](https://beyondco.de/img/docs/expose/img/card.png)
+![](https://beyondco.de/img/docs/laravel-prose-linter/laravel-prose-linter.png)
 
 # Laravel Prose Linter
 

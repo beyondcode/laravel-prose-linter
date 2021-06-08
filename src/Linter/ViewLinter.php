@@ -11,6 +11,10 @@ use Symfony\Component\Finder\SplFileInfo;
 class ViewLinter extends Vale
 {
 
+    /**
+     * @param $excludedDirectories
+     * @return Collection
+     */
     public function readBladeKeys($excludedDirectories)
     {
         $viewFinder = (new Finder())
@@ -32,11 +36,18 @@ class ViewLinter extends Vale
     }
 
 
+    /**
+     *
+     */
     public function deleteLintableCopy()
     {
         File::deleteDirectory($this->valePath . "/tmp");
     }
 
+    /**
+     * @param $templateKey
+     * @return string
+     */
     public function createLintableCopy($templateKey): string
     {
         File::makeDirectory($this->valePath . "/tmp");

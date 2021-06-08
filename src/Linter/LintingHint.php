@@ -3,9 +3,6 @@
 namespace Beyondcode\LaravelProseLinter\Linter;
 
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-
 class LintingHint
 {
 

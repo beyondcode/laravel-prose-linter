@@ -6,14 +6,16 @@ use Illuminate\Support\Str;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use Illuminate\Support\Collection;
-use Symfony\Component\Process\Process;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class TranslationLinter extends Vale
 {
 
-    public function getTranslationFiles()
+    /**
+     * @return array
+     */
+    public function getTranslationFiles(): array
     {
         $languageDirectory = resource_path("lang/en");
         $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($languageDirectory));
@@ -45,12 +47,20 @@ class TranslationLinter extends Vale
         return $namespaces->toArray();
     }
 
+    /**
+     * @param string $namespace
+     * @return array|string
+     */
     public function readTranslationArray(string $namespace)
     {
         // TODO flatten, e.g. validation
         return __($namespace);
     }
 
+    /**
+     * @param string $namespace
+     * @return array
+     */
     public function lintNamespace(string $namespace): array
     {
         $translations = $this->readTranslationArray($namespace);
@@ -69,26 +79,14 @@ class TranslationLinter extends Vale
         return $results;
     }
 
+    /**
+     * @param string $translationKey
+     * @param string $translationText
+     * @throws LinterException
+     */
     public function lintSingleTranslation(string $translationKey, string $translationText)
     {
-
-        $process = Process::fromShellCommandline(
-            './vale --output=JSON --ext=".md" "' . $translationText . '"'
-        );
-        $process->setWorkingDirectory($this->valePath);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new ProcessFailedException($process);
-        }
-
-        $result = json_decode($process->getOutput(), true);
-
-        if (!empty($result)) {
-            throw LinterException::withResult($result, $translationKey);
-        } elseif ($result === null || !is_array($result)) {
-            throw new LinterException("Invalid vale output: " . print_r($process->getOutput(), true));
-        }
+        $this->lintString($translationText, $translationKey);
     }
 
 

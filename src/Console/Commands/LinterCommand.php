@@ -2,9 +2,9 @@
 
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 abstract class LinterCommand extends Command
 {

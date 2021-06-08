@@ -6,6 +6,9 @@ namespace Beyondcode\LaravelProseLinter\Styles;
 class Vale implements StyleInterface
 {
 
+    /**
+     * @return string
+     */
     public static function getStyleDirectoryName(): string
     {
         return 'vale';
