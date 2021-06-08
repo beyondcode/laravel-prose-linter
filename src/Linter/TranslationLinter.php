@@ -87,7 +87,7 @@ class TranslationLinter extends Vale
         if (!empty($result)) {
             throw LinterException::withResult($result, $translationKey);
         } elseif ($result === null || !is_array($result)) {
-            throw new LinterException("Invalid vale output.");
+            throw new LinterException("Invalid vale output: " . print_r($process->getOutput(), true));
         }
     }
 

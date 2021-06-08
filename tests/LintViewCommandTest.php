@@ -46,7 +46,7 @@ class LintViewCommandTest extends TestCase
         $this->artisan('lint:blade temporary')
             ->expectsOutput("Linting single blade template with key 'temporary'.")
             ->expectsTable(
-                ['Template Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
+                ['Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
                 [
                     ['temporary', 1, 46, "'many' is a weasel word!", 'warning', 'write-good.Weasel']
                 ]

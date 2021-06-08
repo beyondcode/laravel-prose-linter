@@ -14,7 +14,7 @@ abstract class LinterCommand extends Command
      * @param bool $outputAsJson
      * @param int $lintingDuration
      */
-    protected function finishLintingOutput(array $results, bool $outputAsJson, int $lintingDuration)
+    protected function finishLintingOutput(array $results, bool $outputAsJson, float $lintingDuration)
     {
         $this->newLine();
 
@@ -30,7 +30,7 @@ abstract class LinterCommand extends Command
                 $this->warn($filePath);
             } else {
                 $this->table(
-                    ['Template Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
+                    ['Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
                     $results
                 );
                 $this->warn("{$totalHints} linting hints were found.");

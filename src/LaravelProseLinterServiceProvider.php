@@ -17,7 +17,7 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/config.php' => config_path('linter.php'),
-            ], 'config');
+            ], 'linting-config');
 
             // Publish the style files
             $this->publishes([

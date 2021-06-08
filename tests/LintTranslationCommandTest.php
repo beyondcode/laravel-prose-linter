@@ -20,7 +20,7 @@ class LintTranslationCommandTest extends TestCase
     {
         $this->artisan('lint:translation auth')
             ->expectsTable(
-                ['Template Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
+                ['Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
                 [
                     ['auth.throttle', 1, 5, "'many' is a weasel word!", 'warning', 'write-good.Weasel']
                 ]

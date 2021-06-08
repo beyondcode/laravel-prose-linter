@@ -54,7 +54,7 @@ class Vale
         if (!empty($result)) {
             throw LinterException::withResult($result, $textIdentifier ?? "Text");
         } elseif ($result === null || !is_array($result)) {
-            throw new LinterException("Invalid vale output.");
+            throw new LinterException("Invalid vale output: " . print_r($process->getOutput(), true));
         }
     }
 
@@ -68,6 +68,7 @@ class Vale
         $process = Process::fromShellCommandline(
             'vale --output=JSON ' . $filePath
         );
+
         $process->setWorkingDirectory($this->valePath);
 
         $process->run();
@@ -77,7 +78,7 @@ class Vale
         if (!empty($result)) {
             throw LinterException::withResult($result, $textIdentifier);
         } elseif ($result === null || !is_array($result)) {
-            throw new Exception("Invalid vale output. " . print_r($process->getOutput(), true));
+            throw new Exception("Invalid vale output: " . print_r($process->getOutput(), true));
         }
     }
 

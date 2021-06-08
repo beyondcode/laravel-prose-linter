@@ -1,7 +1,7 @@
 <?php
 
 /*
- * You can place your custom package configuration in here.
+ * Customize the Vale styles used by the linter.
  */
 return [
     'styles' => [
