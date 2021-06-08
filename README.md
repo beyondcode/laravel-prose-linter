@@ -1,52 +1,29 @@
-# Very short description of the package
+![](https://beyondco.de/img/docs/expose/img/card.png)
+
+# Laravel Prose Linter
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/beyondcode/laravel-prose-linter.svg?style=flat-square)](https://packagist.org/packages/beyondcode/laravel-prose-linter)
 [![Total Downloads](https://img.shields.io/packagist/dt/beyondcode/laravel-prose-linter.svg?style=flat-square)](https://packagist.org/packages/beyondcode/laravel-prose-linter)
-![GitHub Actions](https://github.com/beyondcode/laravel-prose-linter/actions/workflows/main.yml/badge.svg)
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
 
-## Installation
+Syntax-aware proofreading for your Laravel application.
 
-You can install the package via composer:
+The Laravel Prose Linter helps you to polish the texts of your Laravel application. Let it check your translations and even your blade templates for typos, slang and get suggestions for a better writing style depending on which prose style you choose.
 
-```bash
-composer require beyondcode/laravel-prose-linter
-```
+## Documentation
 
-## Usage
-
-```php
-// Usage description here
-```
-
-### Testing
-
-```bash
-composer test
-```
-
-### Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
+For installation instructions and usage and examples, please take a look at the [official documentation](https://beyondco.de/docs/laravel-prose-linter/).
 
 ### Security
 
-If you discover any security related issues, please email diana@beyondco.de instead of using the issue tracker.
+If you discover any security related issues, please email support@beyondco.de instead of using the issue tracker.
 
 ## Credits
 
--   [Diana Scharf](https://github.com/beyondcode)
--   [All Contributors](../../contributors)
+- [Diana Scharf](https://github.com/dianawebdev)
+- [Marcel Pociot](https://github.com/mpociot)
+- [All Contributors](../../contributors)
 
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## Laravel Package Boilerplate
-
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
