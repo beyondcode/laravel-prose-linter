@@ -44,7 +44,7 @@ class Vale
                 $this->valeExecutable = './vale-macos ';
                 break;
             case 'Windows':
-                $this->valeExecutable = './vale.exe ';
+                $this->valeExecutable = 'vale.exe ';
                 break;
             case 'Linux':
                 $this->valeExecutable = './vale-linux ';
