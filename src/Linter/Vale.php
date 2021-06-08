@@ -40,7 +40,7 @@ class Vale
         }
 
         $process = Process::fromShellCommandline(
-            'vale --output=JSON --ext=".md" "' . $textToLint . '"'
+            './vale --output=JSON --ext=".md" "' . $textToLint . '"'
         );
         $process->setWorkingDirectory($this->valePath);
         $process->run();
@@ -66,7 +66,7 @@ class Vale
     public function lintFile($filePath, $textIdentifier)
     {
         $process = Process::fromShellCommandline(
-            'vale --output=JSON ' . $filePath
+            './vale --output=JSON ' . $filePath
         );
 
         $process->setWorkingDirectory($this->valePath);

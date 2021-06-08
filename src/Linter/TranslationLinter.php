@@ -73,7 +73,7 @@ class TranslationLinter extends Vale
     {
 
         $process = Process::fromShellCommandline(
-            'vale --output=JSON --ext=".md" "' . $translationText . '"'
+            './vale --output=JSON --ext=".md" "' . $translationText . '"'
         );
         $process->setWorkingDirectory($this->valePath);
         $process->run();
