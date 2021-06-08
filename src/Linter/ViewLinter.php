@@ -29,7 +29,7 @@ class ViewLinter extends Vale
         foreach ($viewFinder as $viewFile) {
             $viewName = $viewFile->getRelativePath() . '.' . $viewFile->getBasename('.blade.php');
 
-            $bladeTemplateKeys->add(Str::replace('/', '.', $viewName));
+            $bladeTemplateKeys->add(str_replace('/', '.', $viewName));
         }
 
         return $bladeTemplateKeys;

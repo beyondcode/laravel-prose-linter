@@ -16,7 +16,7 @@ abstract class LinterCommand extends Command
      */
     protected function finishLintingOutput(array $results, bool $outputAsJson, float $lintingDuration)
     {
-        $this->newLine();
+        $this->info(PHP_EOL);
 
         $totalHints = count($results);
 
