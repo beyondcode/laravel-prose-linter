@@ -17,7 +17,13 @@ class TranslationLinter extends Vale
      */
     public function getTranslationFiles(): array
     {
-        $languageDirectory = resource_path("lang/en");
+
+        if (PHP_OS_FAMILY === "Windows") { // TODO move this to vale
+            $fileSlash = "\\";
+        } else
+            $fileSlash = "/";
+
+        $languageDirectory = resource_path("lang{$fileSlash}en");
         $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($languageDirectory));
 
         $translationFiles = new Collection();
@@ -32,17 +38,18 @@ class TranslationLinter extends Vale
 
             $it->next();
         }
-
         // extract namespaces
-        $namespaces = $translationFiles->map(function ($file) {
+        $namespaces = $translationFiles->map(function ($file) use ($fileSlash) {
             if (Str::startsWith($file, ".")) {
                 return false;
             }
 
-            $fileName = Str::afterLast($file, "lang/en/");
+            $fileName = Str::afterLast($file, "lang{$fileSlash}en{$fileSlash}");
+
 
             return Str::before($fileName, ".php");
         });
+
 
         return $namespaces->toArray();
     }
@@ -93,6 +100,4 @@ class TranslationLinter extends Vale
     {
         $this->lintString($translationText, $translationKey);
     }
-
-
 }
