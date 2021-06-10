@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "204feca89f9694f3cd008407da0048c0",
+    "content-hash": "7c68a63520f3729c1ba4b5accc167790",
     "packages": [
         {
             "name": "brick/math",
@@ -950,16 +950,16 @@
         },
         {
             "name": "nesbot/carbon",
-            "version": "2.48.1",
+            "version": "2.49.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "8d1f50f1436fb4b05e7127360483dd9c6e73da16"
+                "reference": "93d9db91c0235c486875d22f1e08b50bdf3e6eee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/8d1f50f1436fb4b05e7127360483dd9c6e73da16",
-                "reference": "8d1f50f1436fb4b05e7127360483dd9c6e73da16",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/93d9db91c0235c486875d22f1e08b50bdf3e6eee",
+                "reference": "93d9db91c0235c486875d22f1e08b50bdf3e6eee",
                 "shasum": ""
             },
             "require": {
@@ -1039,7 +1039,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-26T22:08:38+00:00"
+            "time": "2021-06-02T07:31:40+00:00"
         },
         {
             "name": "opis/closure",
@@ -6670,16 +6670,16 @@
         },
         {
             "name": "spatie/ray",
-            "version": "1.25.0",
+            "version": "1.26.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/ray.git",
-                "reference": "168c4b47a54586da1ea2c4695523c429ee527f73"
+                "reference": "67e2f4184e7acb40963358bd888341e27db484b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/ray/zipball/168c4b47a54586da1ea2c4695523c429ee527f73",
-                "reference": "168c4b47a54586da1ea2c4695523c429ee527f73",
+                "url": "https://api.github.com/repos/spatie/ray/zipball/67e2f4184e7acb40963358bd888341e27db484b8",
+                "reference": "67e2f4184e7acb40963358bd888341e27db484b8",
                 "shasum": ""
             },
             "require": {
@@ -6729,7 +6729,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/ray/issues",
-                "source": "https://github.com/spatie/ray/tree/1.25.0"
+                "source": "https://github.com/spatie/ray/tree/1.26.0"
             },
             "funding": [
                 {
@@ -6741,7 +6741,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-06-07T07:03:00+00:00"
+            "time": "2021-06-10T15:04:16+00:00"
         },
         {
             "name": "symfony/stopwatch",
