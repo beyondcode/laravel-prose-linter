@@ -25,6 +25,12 @@ class Vale
     protected string $valeExecutable;
 
     /**
+     * Directory separator depending on the operating system.
+     * @var string
+     */
+    protected string $directorySeparator;
+
+    /**
      * @throws LinterException
      */
     public function __construct()
@@ -32,6 +38,7 @@ class Vale
         $this->valePath = __DIR__ . "/../../bin/vale-ai";
         $this->resolveValeExecutable();
         $this->writeValeIni();
+        $this->handleFileSystem();
     }
 
     /**
@@ -52,6 +59,16 @@ class Vale
             default:
                 throw new LinterException("Operating system is not supported: " . PHP_OS_FAMILY);
         }
+    }
+
+    /**
+     *
+     */
+    private function handleFileSystem() {
+        if (PHP_OS_FAMILY === "Windows") {
+            $this->directorySeparator = "\\";
+        } else
+            $this->directorySeparator = "/";
     }
 
     /**
