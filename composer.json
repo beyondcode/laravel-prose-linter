@@ -1,11 +1,11 @@
 {
     "name": "beyondcode/laravel-prose-linter",
-    "description": "Aweeeeesomeeeee",
+    "description": "Syntax-aware proofreading for your Laravel application.",
     "keywords": [
         "beyondcode",
         "laravel-prose-linter"
     ],
-    "homepage": "https://github.com/beyondcode/laravel-prose-linter",
+    "homepage": "https://beyondco.de/docs/laravel-prose-linter/",
     "license": "MIT",
     "type": "library",
     "authors": [
