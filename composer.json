@@ -3,6 +3,10 @@
     "description": "Syntax-aware proofreading for your Laravel application.",
     "keywords": [
         "beyondcode",
+        "laravel",
+        "vale",
+        "linter",
+        "prose linting",
         "laravel-prose-linter"
     ],
     "homepage": "https://beyondco.de/docs/laravel-prose-linter/",
