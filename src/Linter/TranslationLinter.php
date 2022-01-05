@@ -112,10 +112,10 @@ class TranslationLinter extends Vale
     }
 
     /**
-     * @param string $translationKey
-     * @param string $translationText
-     *
+     * @param  string  $translationKey
+     * @param  string  $translationText
      * @return array|null
+     *
      * @throws LinterException
      */
     public function lintSingleTranslation(string $translationKey, string $translationText): array|null
