@@ -57,7 +57,6 @@ class TranslationLinter extends Vale
         return __($namespace);
     }
 
-
     /**
      * @param  string  $namespace
      * @return array

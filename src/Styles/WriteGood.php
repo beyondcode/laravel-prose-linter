@@ -4,7 +4,6 @@ namespace Beyondcode\LaravelProseLinter\Styles;
 
 class WriteGood implements StyleInterface
 {
-
     /**
      * @return string
      */

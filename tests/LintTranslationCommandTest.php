@@ -2,10 +2,10 @@
 
 namespace Beyondcode\LaravelProseLinter\Tests;
 
-use Orchestra\Testbench\TestCase;
 use Beyondcode\LaravelProseLinter\LaravelProseLinterServiceProvider;
 use Beyondcode\LaravelProseLinter\Styles\Vale;
 use Illuminate\Support\Facades\Config;
+use Orchestra\Testbench\TestCase;
 
 class LintTranslationCommandTest extends TestCase
 {
