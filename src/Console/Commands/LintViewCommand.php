@@ -74,9 +74,6 @@ class LintViewCommand extends LinterCommand
                 }
                 $results = array_merge($results, $result);
             }
-//            catch (LinterException $linterException) {
-//                $results = array_merge($results, $linterException->getResult()->toArray());
-//            }
             catch (Exception $exception) {
                 $this->warn("({$templateToLint}) Unexpected error.");
                 if ($verbose) {
