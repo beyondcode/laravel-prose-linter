@@ -11,7 +11,7 @@ abstract class LinterCommand extends Command
     /**
      * @param  array  $results
      * @param  bool  $outputAsJson
-     * @param  int  $lintingDuration
+     * @param  float  $lintingDuration
      */
     protected function finishLintingOutput(array $results, bool $outputAsJson, float $lintingDuration)
     {
@@ -24,7 +24,7 @@ abstract class LinterCommand extends Command
                 $filePath = storage_path('linting_blade_result_'.date('Y-m-d-H-i-s').'.json');
                 File::put($filePath, json_encode($results, JSON_UNESCAPED_SLASHES));
 
-                $this->warn("{$totalHints} linting hints were found.");
+                $this->warn("$totalHints linting hints were found.");
                 $this->warn('For detail, check results in file');
                 $this->warn($filePath);
             } else {
@@ -32,7 +32,7 @@ abstract class LinterCommand extends Command
                     ['Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
                     $results
                 );
-                $this->warn("{$totalHints} linting hints were found.");
+                $this->warn("$totalHints linting hints were found.");
             }
         } else {
             $this->info('✅ No errors, warnings or suggestions found.');
@@ -47,6 +47,6 @@ abstract class LinterCommand extends Command
                 ->implode(', ')
         );
 
-        $this->info("🏁 Finished linting in {$lintingDuration} seconds.");
+        $this->info("🏁 Finished linting in $lintingDuration seconds.");
     }
 }

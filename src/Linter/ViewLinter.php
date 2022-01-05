@@ -13,7 +13,7 @@ class ViewLinter extends Vale
      * @param $excludedDirectories
      * @return Collection
      */
-    public function readBladeKeys($excludedDirectories)
+    public function readBladeKeys($excludedDirectories): Collection
     {
         $viewFinder = (new Finder())
             ->ignoreDotFiles(true)

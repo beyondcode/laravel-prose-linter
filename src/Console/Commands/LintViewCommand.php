@@ -38,7 +38,7 @@ class LintViewCommand extends LinterCommand
         // collect blade files to lint
         $templatesToLint = [];
         if ($singleBladeTemplate !== null) {
-            $this->line("Linting single blade template with key '{$singleBladeTemplate}'.");
+            $this->line("Linting single blade template with key '$singleBladeTemplate'.");
             $templatesToLint[] = $singleBladeTemplate;
             $totalFilesToLint = count($templatesToLint);
         } else {
@@ -52,7 +52,7 @@ class LintViewCommand extends LinterCommand
             }
             $this->line($message);
 
-            $this->line("Found {$totalFilesToLint} blade files.");
+            $this->line("Found $totalFilesToLint blade files.");
         }
 
         $this->info('🗣  Start linting ...');
@@ -75,7 +75,7 @@ class LintViewCommand extends LinterCommand
                 $results = array_merge($results, $result);
             }
             catch (Exception $exception) {
-                $this->warn("({$templateToLint}) Unexpected error.");
+                $this->warn("($templateToLint) Unexpected error.");
                 if ($verbose) {
                     $this->line($exception->getMessage());
                 }
@@ -88,5 +88,7 @@ class LintViewCommand extends LinterCommand
         $progressBar->finish();
 
         $this->finishLintingOutput($results, $outputAsJson, $lintingDuration);
+
+        return 0;
     }
 }

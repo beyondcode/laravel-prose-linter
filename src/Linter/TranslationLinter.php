@@ -51,7 +51,7 @@ class TranslationLinter extends Vale
      * @param  string  $namespace
      * @return array|string
      */
-    public function readTranslationArray(string $namespace)
+    public function readTranslationArray(string $namespace): array|string
     {
         // TODO flatten, e.g. validation
         return __($namespace);
@@ -81,6 +81,9 @@ class TranslationLinter extends Vale
         return $this->lintingResults;
     }
 
+    /**
+     * @throws LinterException
+     */
     private function lintTranslationArray($translations, $parentKey = null)
     {
         foreach ($translations as $translationKey => $translationText) {
@@ -103,18 +106,19 @@ class TranslationLinter extends Vale
         }
     }
 
-    private function translationKey($translationKey, $parentKey = null)
+    private function translationKey($translationKey, $parentKey = null): string
     {
         return $parentKey ? $parentKey.'.'.$translationKey : $translationKey;
     }
 
     /**
-     * @param  string  $translationKey
-     * @param  string  $translationText
+     * @param string $translationKey
+     * @param string $translationText
      *
+     * @return array|null
      * @throws LinterException
      */
-    public function lintSingleTranslation(string $translationKey, string $translationText)
+    public function lintSingleTranslation(string $translationKey, string $translationText): array|null
     {
         return $this->lintString($translationText, $translationKey);
     }

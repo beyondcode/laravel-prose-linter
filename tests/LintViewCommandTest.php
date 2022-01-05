@@ -21,7 +21,7 @@ class LintViewCommandTest extends TestCase
     public function it_does_ask_for_confirmation_for_all_blade_templates()
     {
         $this->artisan('lint:blade')
-            ->expectsConfirmation('Are you sure you want to lint all blade files in your application?', 'no')
+            ->expectsConfirmation('Are you sure you want to lint all blade files in your application?')
             ->expectsOutput('❌ Linting aborted.')
             ->assertExitCode(1);
 

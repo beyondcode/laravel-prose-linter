@@ -16,7 +16,7 @@ class LinterException extends Exception
      * @param  string  $textKey
      * @return LinterException
      */
-    public static function withResult(array $output, string $textKey)
+    public static function withResult(array $output, string $textKey): LinterException
     {
         $e = new LinterException('Linting errors were found');
 
