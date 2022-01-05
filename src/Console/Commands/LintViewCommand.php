@@ -66,10 +66,17 @@ class LintViewCommand extends LinterCommand
                 $progressBar->advance();
 
                 $filePath = $viewLinter->createLintableCopy($templateToLint);
-                $viewLinter->lintFile($filePath, $templateToLint);
-            } catch (LinterException $linterException) {
-                $results = array_merge($results, $linterException->getResult()->toArray());
-            } catch (Exception $exception) {
+
+                $result = $viewLinter->lintFile($filePath, $templateToLint);
+                if ($result === null) {
+                    continue;
+                }
+                $results = array_merge($results, $result);
+            }
+//            catch (LinterException $linterException) {
+//                $results = array_merge($results, $linterException->getResult()->toArray());
+//            }
+            catch (Exception $exception) {
                 $this->warn("({$templateToLint}) Unexpected error.");
                 if ($verbose) {
                     $this->line($exception->getMessage());
@@ -77,7 +84,6 @@ class LintViewCommand extends LinterCommand
             } finally {
                 $viewLinter->deleteLintableCopy();
             }
-
         }
 
         $lintingDuration = round(microtime(true) - $startTime, 2);
@@ -85,6 +91,4 @@ class LintViewCommand extends LinterCommand
 
         $this->finishLintingOutput($results, $outputAsJson, $lintingDuration);
     }
-
-
 }

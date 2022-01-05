@@ -2,22 +2,22 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Illuminate\Support\Str;
-use RecursiveIteratorIterator;
-use RecursiveDirectoryIterator;
-use Illuminate\Support\Collection;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class TranslationLinter extends Vale
 {
+    private array $lintingResults = [];
 
     /**
      * @return array
      */
     public function getTranslationFiles(): array
     {
-
         $languageDirectory = resource_path("lang{$this->directorySeparator}en");
         $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($languageDirectory));
 
@@ -27,7 +27,7 @@ class TranslationLinter extends Vale
         $it->rewind();
 
         while ($it->valid()) {
-            if (!$it->isDot()) {
+            if (! $it->isDot()) {
                 $translationFiles->add($it->key());
             }
 
@@ -35,22 +35,20 @@ class TranslationLinter extends Vale
         }
         // extract namespaces
         $namespaces = $translationFiles->map(function ($file) {
-            if (Str::startsWith($file, ".")) {
+            if (Str::startsWith($file, '.')) {
                 return false;
             }
 
             $fileName = Str::afterLast($file, "lang{$this->directorySeparator}en{$this->directorySeparator}");
 
-
-            return Str::before($fileName, ".php");
+            return Str::before($fileName, '.php');
         });
-
 
         return $namespaces->toArray();
     }
 
     /**
-     * @param string $namespace
+     * @param  string  $namespace
      * @return array|string
      */
     public function readTranslationArray(string $namespace)
@@ -59,40 +57,66 @@ class TranslationLinter extends Vale
         return __($namespace);
     }
 
+
     /**
-     * @param string $namespace
+     * @param  string  $namespace
      * @return array
+     *
      * @throws LinterException
      */
     public function lintNamespace(string $namespace): array
     {
         $translations = $this->readTranslationArray($namespace);
 
-        if (!is_array($translations)) {
-            throw new LinterException("No translations found.");
+        if (! is_array($translations)) {
+            throw new LinterException('No translations found.');
         }
 
-        $results = [];
+        $this->lintingResults = [];
+        try {
+            $this->lintTranslationArray($translations, $namespace);
+        } catch (ProcessFailedException $processFailedException) {
+            // toDo
+        }
+
+        return $this->lintingResults;
+    }
+
+    private function lintTranslationArray($translations, $parentKey = null)
+    {
         foreach ($translations as $translationKey => $translationText) {
-            try {
-                $this->lintString($translationText, "{$namespace}.{$translationKey}");
-            } catch (LinterException $linterException) {
-                $results[] = $linterException->getResult()->toArray();
-            } catch (ProcessFailedException $processFailedException) {
-                break; // todo
+            if (is_array($translationText)) {
+                $fullKey = $this->translationKey($translationKey, $parentKey);
+                $this->lintTranslationArray($translationText, $fullKey);
+                continue;
             }
-        }
 
-        return $results;
+            $result = $this->lintString(
+                $translationText,
+                $this->translationKey($translationKey, $parentKey)
+            );
+
+            if ($result === null) {
+                continue;
+            }
+
+            $this->lintingResults[] = $result;
+        }
+    }
+
+    private function translationKey($translationKey, $parentKey = null)
+    {
+        return $parentKey ? $parentKey.'.'.$translationKey : $translationKey;
     }
 
     /**
-     * @param string $translationKey
-     * @param string $translationText
+     * @param  string  $translationKey
+     * @param  string  $translationText
+     *
      * @throws LinterException
      */
     public function lintSingleTranslation(string $translationKey, string $translationText)
     {
-        $this->lintString($translationText, $translationKey);
+        return $this->lintString($translationText, $translationKey);
     }
 }
