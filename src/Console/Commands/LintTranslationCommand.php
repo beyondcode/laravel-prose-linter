@@ -2,9 +2,9 @@
 
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
+use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
 use Exception;
 use Illuminate\Support\Arr;
-use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
 
 class LintTranslationCommand extends LinterCommand
 {
@@ -17,14 +17,14 @@ class LintTranslationCommand extends LinterCommand
         $translationLinter = new TranslationLinter();
 
         // collect command input
-        $namespaces = $this->argument("namespace");
-        $outputAsJson = $this->option("json") ? true : false;
-        $verbose = $this->option("verbose");
+        $namespaces = $this->argument('namespace');
+        $outputAsJson = $this->option('json') ? true : false;
+        $verbose = $this->option('verbose');
 
         $namespacesToLint = empty($namespaces) ? $translationLinter->getTranslationFiles() : $namespaces;
         $totalNamespacesToLint = count($namespacesToLint);
 
-        $this->info("🗣  Start linting ...");
+        $this->info('🗣  Start linting ...');
         $startTime = microtime(true);
 
         // create progress bar
@@ -32,7 +32,6 @@ class LintTranslationCommand extends LinterCommand
 
         $results = [];
         foreach ($namespacesToLint as $namespaceToLint) {
-
             try {
                 $results[] = $translationLinter->lintNamespace($namespaceToLint);
                 $progressBar->advance();
@@ -42,9 +41,7 @@ class LintTranslationCommand extends LinterCommand
                     $this->line($exception->getMessage());
                 }
             }
-
         }
-
 
         $tableResults = Arr::flatten($results, 2);
 
@@ -53,5 +50,4 @@ class LintTranslationCommand extends LinterCommand
 
         $this->finishLintingOutput($tableResults, $outputAsJson, $lintingDuration);
     }
-
 }

@@ -6,7 +6,7 @@
 return [
     'styles' => [
         \Beyondcode\LaravelProseLinter\Styles\WriteGood::class,
-        \Beyondcode\LaravelProseLinter\Styles\Vale::class
-    ]
+        \Beyondcode\LaravelProseLinter\Styles\Vale::class,
+    ],
 
 ];
