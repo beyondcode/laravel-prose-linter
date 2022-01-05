@@ -20,7 +20,7 @@ If you discover any security related issues, please email support@beyondco.de in
 
 ## Credits
 
-- [Diana Scharf](https://github.com/dianawebdev)
+- [Diana Scharf](https://github.com/mechelon)
 - [Marcel Pociot](https://github.com/mpociot)
 - [All Contributors](../../contributors)
 
