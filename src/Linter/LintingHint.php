@@ -2,10 +2,8 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-
 class LintingHint
 {
-
     /**
      * @var string Library condition that produced the hint, e.g. "write-good.TooWordy"
      */
@@ -32,11 +30,11 @@ class LintingHint
     private string $severity;
 
     /**
-     * @param string $libraryCheck
-     * @param int $line
-     * @param int $position
-     * @param string $message
-     * @param string $severity
+     * @param  string  $libraryCheck
+     * @param  int  $line
+     * @param  int  $position
+     * @param  string  $message
+     * @param  string  $severity
      */
     public function __construct(string $libraryCheck, int $line, int $position, string $message, string $severity)
     {
@@ -48,7 +46,7 @@ class LintingHint
     }
 
     /**
-     * @param array $result
+     * @param  array  $result
      * @return LintingHint
      */
     public static function fromJson(array $result): LintingHint
@@ -56,11 +54,11 @@ class LintingHint
         $hintData = $result;
 
         return new LintingHint(
-            $hintData["Check"],
+            $hintData['Check'],
             $hintData['Line'],
             $hintData['Span'][0],
-            $hintData["Message"],
-            $hintData["Severity"]
+            $hintData['Message'],
+            $hintData['Severity']
         );
     }
 
@@ -70,14 +68,13 @@ class LintingHint
     public function toArray(): array
     {
         return [
-            "line" => $this->line,
-            "position" => $this->position,
-            "message" => $this->message,
-            "severity" => $this->severity,
-            "libraryCheck" => $this->libraryCheck,
+            'line' => $this->line,
+            'position' => $this->position,
+            'message' => $this->message,
+            'severity' => $this->severity,
+            'libraryCheck' => $this->libraryCheck,
         ];
     }
-
 
     /**
      * @return array
@@ -91,6 +88,5 @@ class LintingHint
             $this->severity,
             $this->libraryCheck,
         ];
-
     }
 }

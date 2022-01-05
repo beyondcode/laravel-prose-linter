@@ -2,17 +2,16 @@
 
 namespace Beyondcode\LaravelProseLinter\Tests;
 
-use Orchestra\Testbench\TestCase;
-use Illuminate\Support\Facades\File;
 use Beyondcode\LaravelProseLinter\LaravelProseLinterServiceProvider;
+use Illuminate\Support\Facades\File;
+use Orchestra\Testbench\TestCase;
 
 class LintViewCommandTest extends TestCase
 {
-
     protected function getPackageProviders($app)
     {
         return [
-            LaravelProseLinterServiceProvider::class
+            LaravelProseLinterServiceProvider::class,
         ];
     }
 
@@ -27,7 +26,6 @@ class LintViewCommandTest extends TestCase
         $this->artisan('lint:blade')
             ->expectsConfirmation('Are you sure you want to lint all blade files in your application?', 'yes')
             ->expectsOutput('Linting all blade templates');
-
     }
 
     /** @test */
@@ -36,7 +34,6 @@ class LintViewCommandTest extends TestCase
         $this->artisan('lint:blade singlebladefile --exclude=directory')
             ->expectsOutput('Invalid parameters. Please provide either a single template key to lint or directories to exclude or no further options to lint all blade templates.')
             ->assertExitCode(2);
-
     }
 
     /** @test */
@@ -48,10 +45,9 @@ class LintViewCommandTest extends TestCase
             ->expectsTable(
                 ['Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
                 [
-                    ['temporary', 1, 46, "'many' is a weasel word!", 'warning', 'write-good.Weasel']
+                    ['temporary', 1, 46, "'many' is a weasel word!", 'warning', 'write-good.Weasel'],
                 ]
             );
-
     }
 
     /** @test */
@@ -68,7 +64,4 @@ class LintViewCommandTest extends TestCase
             ->expectsOutput('(idonotexist) Unexpected error.')
             ->expectsOutput('View [idonotexist] not found.');
     }
-
-
-
 }
