@@ -2,7 +2,6 @@
 
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
-use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Beyondcode\LaravelProseLinter\Linter\ViewLinter;
 use Exception;
 
@@ -73,8 +72,7 @@ class LintViewCommand extends LinterCommand
                     continue;
                 }
                 $results = array_merge($results, $result);
-            }
-            catch (Exception $exception) {
+            } catch (Exception $exception) {
                 $this->warn("($templateToLint) Unexpected error.");
                 if ($verbose) {
                     $this->line($exception->getMessage());

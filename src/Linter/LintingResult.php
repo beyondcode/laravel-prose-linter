@@ -15,8 +15,8 @@ class LintingResult
     private array $hints;
 
     /**
-     * @param string $textIdentifier
-     * @param array $results
+     * @param  string  $textIdentifier
+     * @param  array  $results
      * @return LintingResult
      */
     public static function fromJsonOutput(string $textIdentifier, array $results): LintingResult

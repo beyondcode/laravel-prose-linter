@@ -50,7 +50,7 @@ class Vale
             'Darwin' => './vale-macos ',
             'Windows' => 'vale.exe ',
             'Linux' => './vale-linux ',
-            default => throw new LinterException('Operating system is not supported: ' . PHP_OS_FAMILY),
+            default => throw new LinterException('Operating system is not supported: '.PHP_OS_FAMILY),
         };
     }
 
@@ -64,15 +64,14 @@ class Vale
     }
 
     /**
-     * @param string $textToLint
-     * @param string|null $textIdentifier
-     *
+     * @param  string  $textToLint
+     * @param  string|null  $textIdentifier
      * @return array|null
+     *
      * @throws LinterException
      */
     public function lintString(string $textToLint, ?string $textIdentifier = null): array|null
     {
-
         $process = Process::fromShellCommandline(
             $this->valeExecutable.' --output=JSON --ext=".md" "'.$textToLint.'"'
         );
@@ -98,8 +97,8 @@ class Vale
     /**
      * @param $filePath
      * @param $textIdentifier
-     *
      * @return array|null
+     *
      * @throws Exception
      */
     public function lintFile($filePath, $textIdentifier): array|null
@@ -126,6 +125,7 @@ class Vale
 
     /**
      * Build .vale.ini dynamically based on the configuration.
+     *
      * @throws Exception
      */
     protected function getAppliedStyles(): string
@@ -166,6 +166,7 @@ class Vale
 
     /**
      * Create .vale.ini during runtime.
+     *
      * @throws Exception
      */
     public function writeValeIni()
