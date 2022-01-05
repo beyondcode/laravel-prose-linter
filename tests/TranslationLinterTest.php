@@ -2,19 +2,18 @@
 
 namespace Beyondcode\LaravelProseLinter\Tests;
 
-use Orchestra\Testbench\TestCase;
-use Illuminate\Support\Facades\Artisan;
-use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Beyondcode\LaravelProseLinter\LaravelProseLinterServiceProvider;
+use Beyondcode\LaravelProseLinter\Linter\TranslationLinter;
+use Illuminate\Support\Facades\Artisan;
+use Orchestra\Testbench\TestCase;
 
 class TranslationLinterTest extends TestCase
 {
-
     protected function getPackageProviders($app)
     {
         return [
-            LaravelProseLinterServiceProvider::class
+            LaravelProseLinterServiceProvider::class,
         ];
     }
 
@@ -26,10 +25,10 @@ class TranslationLinterTest extends TestCase
         $files = $linter->getTranslationFiles();
 
         $this->assertCount(4, $files);
-        $this->assertContains("passwords", $files);
-        $this->assertContains("auth", $files);
-        $this->assertContains("pagination", $files);
-        $this->assertContains("validation", $files);
+        $this->assertContains('passwords', $files);
+        $this->assertContains('auth', $files);
+        $this->assertContains('pagination', $files);
+        $this->assertContains('validation', $files);
     }
 
     /** @test */
@@ -38,9 +37,8 @@ class TranslationLinterTest extends TestCase
         $linter = new TranslationLinter();
 
         $this->expectException(LinterException::class);
-        $linter->lintSingleTranslation("auth.throttle", "Too many login attempts. Please try again in :seconds seconds");
+        $linter->lintSingleTranslation('auth.throttle', 'Too many login attempts. Please try again in :seconds seconds');
     }
-
 
     /** @test */
     public function it_lints_single_translation_with_custom_styles()
@@ -48,11 +46,9 @@ class TranslationLinterTest extends TestCase
         Artisan::call('vendor:publish --tag=config');
         Artisan::call('vendor:publish --tag=linting-styles');
 
-
         $linter = new TranslationLinter();
 
         $this->expectException(LinterException::class);
-        $linter->lintSingleTranslation("auth.throttle", "Too many login attempts. Please try again in :seconds seconds");
+        $linter->lintSingleTranslation('auth.throttle', 'Too many login attempts. Please try again in :seconds seconds');
     }
-
 }

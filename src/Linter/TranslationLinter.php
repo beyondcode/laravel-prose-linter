@@ -2,22 +2,20 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Illuminate\Support\Str;
-use RecursiveIteratorIterator;
-use RecursiveDirectoryIterator;
-use Illuminate\Support\Collection;
 use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class TranslationLinter extends Vale
 {
-
     /**
      * @return array
      */
     public function getTranslationFiles(): array
     {
-
         $languageDirectory = resource_path("lang{$this->directorySeparator}en");
         $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($languageDirectory));
 
@@ -27,7 +25,7 @@ class TranslationLinter extends Vale
         $it->rewind();
 
         while ($it->valid()) {
-            if (!$it->isDot()) {
+            if (! $it->isDot()) {
                 $translationFiles->add($it->key());
             }
 
@@ -35,22 +33,20 @@ class TranslationLinter extends Vale
         }
         // extract namespaces
         $namespaces = $translationFiles->map(function ($file) {
-            if (Str::startsWith($file, ".")) {
+            if (Str::startsWith($file, '.')) {
                 return false;
             }
 
             $fileName = Str::afterLast($file, "lang{$this->directorySeparator}en{$this->directorySeparator}");
 
-
-            return Str::before($fileName, ".php");
+            return Str::before($fileName, '.php');
         });
-
 
         return $namespaces->toArray();
     }
 
     /**
-     * @param string $namespace
+     * @param  string  $namespace
      * @return array|string
      */
     public function readTranslationArray(string $namespace)
@@ -60,16 +56,17 @@ class TranslationLinter extends Vale
     }
 
     /**
-     * @param string $namespace
+     * @param  string  $namespace
      * @return array
+     *
      * @throws LinterException
      */
     public function lintNamespace(string $namespace): array
     {
         $translations = $this->readTranslationArray($namespace);
 
-        if (!is_array($translations)) {
-            throw new LinterException("No translations found.");
+        if (! is_array($translations)) {
+            throw new LinterException('No translations found.');
         }
 
         $results = [];
@@ -87,8 +84,9 @@ class TranslationLinter extends Vale
     }
 
     /**
-     * @param string $translationKey
-     * @param string $translationText
+     * @param  string  $translationKey
+     * @param  string  $translationText
+     *
      * @throws LinterException
      */
     public function lintSingleTranslation(string $translationKey, string $translationText)

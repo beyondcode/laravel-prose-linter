@@ -2,15 +2,13 @@
 
 namespace Beyondcode\LaravelProseLinter\Linter;
 
-use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
-use Symfony\Component\Finder\Finder;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 
 class ViewLinter extends Vale
 {
-
     /**
      * @param $excludedDirectories
      * @return Collection
@@ -19,7 +17,7 @@ class ViewLinter extends Vale
     {
         $viewFinder = (new Finder())
             ->ignoreDotFiles(true)
-            ->in(resource_path("views"))
+            ->in(resource_path('views'))
             ->exclude($excludedDirectories)
             ->name('*.blade.php');
 
@@ -27,7 +25,7 @@ class ViewLinter extends Vale
 
         /** @var SplFileInfo $viewFile */
         foreach ($viewFinder as $viewFile) {
-            $viewName = $viewFile->getRelativePath() . '.' . $viewFile->getBasename('.blade.php');
+            $viewName = $viewFile->getRelativePath().'.'.$viewFile->getBasename('.blade.php');
 
             $bladeTemplateKeys->add(str_replace('/', '.', $viewName));
         }
@@ -35,13 +33,9 @@ class ViewLinter extends Vale
         return $bladeTemplateKeys;
     }
 
-
-    /**
-     *
-     */
     public function deleteLintableCopy()
     {
-        File::deleteDirectory($this->valePath . "/tmp");
+        File::deleteDirectory($this->valePath.'/tmp');
     }
 
     /**
@@ -50,12 +44,12 @@ class ViewLinter extends Vale
      */
     public function createLintableCopy($templateKey): string
     {
-        File::makeDirectory($this->valePath . "/tmp");
+        File::makeDirectory($this->valePath.'/tmp');
 
         // copy a view to the tmp
         $viewPath = view($templateKey)->getPath();
 
-        $templateCopyPath = $this->valePath . "/tmp/{$templateKey}.blade.html";
+        $templateCopyPath = $this->valePath."/tmp/{$templateKey}.blade.html";
         File::copy($viewPath, $templateCopyPath);
 
         return $templateCopyPath;

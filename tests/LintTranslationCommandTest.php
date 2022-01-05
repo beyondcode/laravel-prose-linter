@@ -2,16 +2,15 @@
 
 namespace Beyondcode\LaravelProseLinter\Tests;
 
-use Orchestra\Testbench\TestCase;
 use Beyondcode\LaravelProseLinter\LaravelProseLinterServiceProvider;
+use Orchestra\Testbench\TestCase;
 
 class LintTranslationCommandTest extends TestCase
 {
-
     protected function getPackageProviders($app)
     {
         return [
-            LaravelProseLinterServiceProvider::class
+            LaravelProseLinterServiceProvider::class,
         ];
     }
 
@@ -22,7 +21,7 @@ class LintTranslationCommandTest extends TestCase
             ->expectsTable(
                 ['Key', 'Line', 'Position', 'Message', 'Severity', 'Condition'],
                 [
-                    ['auth.throttle', 1, 5, "'many' is a weasel word!", 'warning', 'write-good.Weasel']
+                    ['auth.throttle', 1, 5, "'many' is a weasel word!", 'warning', 'write-good.Weasel'],
                 ]
             );
     }
@@ -31,7 +30,7 @@ class LintTranslationCommandTest extends TestCase
     public function it_does_lint_specific_namespace_with_no_hints()
     {
         $this->artisan('lint:translation passwords')
-            ->expectsOutput("✅ No errors, warnings or suggestions found.");
+            ->expectsOutput('✅ No errors, warnings or suggestions found.');
     }
 
     /** @test */
@@ -56,5 +55,4 @@ class LintTranslationCommandTest extends TestCase
             ->expectsOutput('(idonotexist) Unexpected error.')
             ->expectsOutput('No translations found.');
     }
-
 }
