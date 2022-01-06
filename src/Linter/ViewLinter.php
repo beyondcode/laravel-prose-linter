@@ -26,10 +26,10 @@ class ViewLinter extends Vale
         /** @var SplFileInfo $viewFile */
         foreach ($viewFinder as $viewFile) {
             $relativePath = $viewFile->getRelativePath();
-            if(!empty($relativePath)) {
-                $relativePath = $relativePath . '.';
+            if (! empty($relativePath)) {
+                $relativePath = $relativePath.'.';
             }
-            $viewName =  $relativePath .$viewFile->getBasename('.blade.php');
+            $viewName = $relativePath.$viewFile->getBasename('.blade.php');
 
             $bladeTemplateKeys->add(str_replace('/', '.', $viewName));
         }
