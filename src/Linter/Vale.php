@@ -46,19 +46,12 @@ class Vale
      */
     private function resolveValeExecutable()
     {
-        switch (PHP_OS_FAMILY) {
-            case 'Darwin':
-                $this->valeExecutable = './vale-macos ';
-                break;
-            case 'Windows':
-                $this->valeExecutable = 'vale.exe ';
-                break;
-            case 'Linux':
-                $this->valeExecutable = './vale-linux ';
-                break;
-            default:
-                throw new LinterException('Operating system is not supported: '.PHP_OS_FAMILY);
-        }
+        $this->valeExecutable = match (PHP_OS_FAMILY) {
+            'Darwin' => './vale-macos ',
+            'Windows' => 'vale.exe ',
+            'Linux' => './vale-linux ',
+            default => throw new LinterException('Operating system is not supported: '.PHP_OS_FAMILY),
+        };
     }
 
     private function handleFileSystem()
@@ -71,17 +64,14 @@ class Vale
     }
 
     /**
-     * @param $textToLint
-     * @param  null  $textIdentifier
+     * @param  string  $textToLint
+     * @param  string|null  $textIdentifier
+     * @return array|null
      *
      * @throws LinterException
      */
-    public function lintString($textToLint, $textIdentifier = null)
+    public function lintString(string $textToLint, ?string $textIdentifier = null): array|null
     {
-        if (! is_string($textToLint)) {
-            return; // TODO
-        }
-
         $process = Process::fromShellCommandline(
             $this->valeExecutable.' --output=JSON --ext=".md" "'.$textToLint.'"'
         );
@@ -95,19 +85,23 @@ class Vale
         $result = json_decode($process->getOutput(), true);
 
         if (! empty($result)) {
-            throw LinterException::withResult($result, $textIdentifier ?? 'Text');
-        } elseif ($result === null || ! is_array($result)) {
+            return LintingResult::fromJsonOutput($textIdentifier ?? 'Text', $result)->toArray();
+        }
+        if (! is_array($result)) {
             throw new LinterException('Invalid vale output: '.print_r($process->getOutput(), true));
         }
+
+        return null;
     }
 
     /**
      * @param $filePath
      * @param $textIdentifier
+     * @return array|null
      *
-     * @throws LinterException
+     * @throws Exception
      */
-    public function lintFile($filePath, $textIdentifier)
+    public function lintFile($filePath, $textIdentifier): array|null
     {
         $process = Process::fromShellCommandline(
             $this->valeExecutable.' --output=JSON '.$filePath
@@ -120,16 +114,21 @@ class Vale
         $result = json_decode($process->getOutput(), true);
 
         if (! empty($result)) {
-            throw LinterException::withResult($result, $textIdentifier);
-        } elseif ($result === null || ! is_array($result)) {
+            return LintingResult::fromJsonOutput($textIdentifier ?? 'Text', $result)->toArray();
+        }
+        if (! is_array($result)) {
             throw new Exception('Invalid vale output: '.print_r($process->getOutput(), true));
         }
+
+        return null;
     }
 
     /**
      * Build .vale.ini dynamically based on the configuration.
+     *
+     * @throws Exception
      */
-    protected function getAppliedStyles()
+    protected function getAppliedStyles(): string
     {
         $configuredStyles = config('linter.styles', [\Beyondcode\LaravelProseLinter\Styles\Vale::class]);
 
@@ -167,6 +166,8 @@ class Vale
 
     /**
      * Create .vale.ini during runtime.
+     *
+     * @throws Exception
      */
     public function writeValeIni()
     {
@@ -176,6 +177,8 @@ class Vale
 
         $valeIni = "
 StylesPath = styles
+MinAlertLevel = suggestion
+
 [*.{html,md}]
 BasedOnStyles = {$appliedStyles}
 ";

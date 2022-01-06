@@ -13,7 +13,7 @@ class ViewLinter extends Vale
      * @param $excludedDirectories
      * @return Collection
      */
-    public function readBladeKeys($excludedDirectories)
+    public function readBladeKeys($excludedDirectories): Collection
     {
         $viewFinder = (new Finder())
             ->ignoreDotFiles(true)
@@ -25,7 +25,11 @@ class ViewLinter extends Vale
 
         /** @var SplFileInfo $viewFile */
         foreach ($viewFinder as $viewFile) {
-            $viewName = $viewFile->getRelativePath().'.'.$viewFile->getBasename('.blade.php');
+            $relativePath = $viewFile->getRelativePath();
+            if (! empty($relativePath)) {
+                $relativePath = $relativePath.'.';
+            }
+            $viewName = $relativePath.$viewFile->getBasename('.blade.php');
 
             $bladeTemplateKeys->add(str_replace('/', '.', $viewName));
         }

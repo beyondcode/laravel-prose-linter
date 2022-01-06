@@ -14,13 +14,16 @@ The Laravel Prose Linter helps you to polish the texts of your Laravel applicati
 
 For installation instructions and usage and examples, please take a look at the [official documentation](https://beyondco.de/docs/laravel-prose-linter/).
 
+### System Requirements
+This package requires PHP 8.0 or higher.
+
 ### Security
 
 If you discover any security related issues, please email support@beyondco.de instead of using the issue tracker.
 
 ## Credits
 
-- [Diana Scharf](https://github.com/dianawebdev)
+- [Diana Scharf](https://github.com/mechelon)
 - [Marcel Pociot](https://github.com/mpociot)
 - [All Contributors](../../contributors)
 
