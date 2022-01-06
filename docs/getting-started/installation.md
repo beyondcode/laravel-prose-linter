@@ -11,6 +11,9 @@ We recommend to take a quick glimpse at the [errata-ai/vale](https://docs.errata
 
 # Installation
 
+## System Requirements
+This package requires PHP 8.0 or higher.
+
 You can install the package via composer:
 
 ```bash
