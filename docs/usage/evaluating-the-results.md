@@ -2,6 +2,8 @@
 
 ## CLI
 
+The linter outputs every hint with a minimum level of ``suggestion``.
+
 The linting results of blade templates and translations are both printed as a table in the CLI and may look like this:
 
 ```bash
