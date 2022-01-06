@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <title>Dashboard for /Users/dianascharf/Dev/beyondcode/laravel-prose-linter/src/Linter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="../_css/bootstrap.min.css" rel="stylesheet" type="text/css">
+  <link href="../_css/nv.d3.min.css" rel="stylesheet" type="text/css">
+  <link href="../_css/style.css" rel="stylesheet" type="text/css">
+  <link href="../_css/custom.css" rel="stylesheet" type="text/css">
+ </head>
+ <body>
+  <header>
+   <div class="container-fluid">
+    <div class="row">
+     <div class="col-md-12">
+      <nav aria-label="breadcrumb">
+       <ol class="breadcrumb">
+         <li class="breadcrumb-item"><a href="../index.html">/Users/dianascharf/Dev/beyondcode/laravel-prose-linter/src</a></li>
+         <li class="breadcrumb-item"><a href="index.html">Linter</a></li>
+         <li class="breadcrumb-item active">(Dashboard)</li>
+
+       </ol>
+      </nav>
+     </div>
+    </div>
+   </div>
+  </header>
+  <div class="container-fluid">
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Classes</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="classCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="classComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="LintingHint.php.html#5">Beyondcode\LaravelProseLinter\Linter\LintingHint</a></td><td class="text-right">77%</td></tr>
+       <tr><td><a href="Vale.php.html#14">Beyondcode\LaravelProseLinter\Linter\Vale</a></td><td class="text-right">83%</td></tr>
+       <tr><td><a href="TranslationLinter.php.html#12">Beyondcode\LaravelProseLinter\Linter\TranslationLinter</a></td><td class="text-right">87%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Class</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="Vale.php.html#14">Beyondcode\LaravelProseLinter\Linter\Vale</a></td><td class="text-right">18</td></tr>
+       <tr><td><a href="TranslationLinter.php.html#12">Beyondcode\LaravelProseLinter\Linter\TranslationLinter</a></td><td class="text-right">15</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-12">
+     <h2>Methods</h2>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Coverage Distribution</h3>
+     <div id="methodCoverageDistribution" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Complexity</h3>
+     <div id="methodComplexity" style="height: 300px;">
+       <svg></svg>
+     </div>
+    </div>
+   </div>
+   <div class="row">
+    <div class="col-md-6">
+     <h3>Insufficient Coverage</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right">Coverage</th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="LintingHint.php.html#68"><abbr title="Beyondcode\LaravelProseLinter\Linter\LintingHint::toArray">toArray</abbr></a></td><td class="text-right">0%</td></tr>
+       <tr><td><a href="Vale.php.html#47"><abbr title="Beyondcode\LaravelProseLinter\Linter\Vale::resolveValeExecutable">resolveValeExecutable</abbr></a></td><td class="text-right">40%</td></tr>
+       <tr><td><a href="Vale.php.html#57"><abbr title="Beyondcode\LaravelProseLinter\Linter\Vale::handleFileSystem">handleFileSystem</abbr></a></td><td class="text-right">66%</td></tr>
+       <tr><td><a href="TranslationLinter.php.html#87"><abbr title="Beyondcode\LaravelProseLinter\Linter\TranslationLinter::lintTranslationArray">lintTranslationArray</abbr></a></td><td class="text-right">72%</td></tr>
+       <tr><td><a href="Vale.php.html#73"><abbr title="Beyondcode\LaravelProseLinter\Linter\Vale::lintString">lintString</abbr></a></td><td class="text-right">83%</td></tr>
+       <tr><td><a href="Vale.php.html#148"><abbr title="Beyondcode\LaravelProseLinter\Linter\Vale::writeStyles">writeStyles</abbr></a></td><td class="text-right">83%</td></tr>
+       <tr><td><a href="TranslationLinter.php.html#66"><abbr title="Beyondcode\LaravelProseLinter\Linter\TranslationLinter::lintNamespace">lintNamespace</abbr></a></td><td class="text-right">85%</td></tr>
+       <tr><td><a href="Vale.php.html#131"><abbr title="Beyondcode\LaravelProseLinter\Linter\Vale::getAppliedStyles">getAppliedStyles</abbr></a></td><td class="text-right">87%</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+    <div class="col-md-6">
+     <h3>Project Risks</h3>
+     <div class="scrollbox">
+      <table class="table">
+       <thead>
+        <tr>
+         <th>Method</th>
+         <th class="text-right"><abbr title="Change Risk Anti-Patterns (CRAP) Index">CRAP</abbr></th>
+        </tr>
+       </thead>
+       <tbody>
+       <tr><td><a href="TranslationLinter.php.html#87"><abbr title="Beyondcode\LaravelProseLinter\Linter\TranslationLinter::lintTranslationArray">lintTranslationArray</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="Vale.php.html#73"><abbr title="Beyondcode\LaravelProseLinter\Linter\Vale::lintString">lintString</abbr></a></td><td class="text-right">4</td></tr>
+       <tr><td><a href="TranslationLinter.php.html#66"><abbr title="Beyondcode\LaravelProseLinter\Linter\TranslationLinter::lintNamespace">lintNamespace</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="Vale.php.html#131"><abbr title="Beyondcode\LaravelProseLinter\Linter\Vale::getAppliedStyles">getAppliedStyles</abbr></a></td><td class="text-right">3</td></tr>
+       <tr><td><a href="Vale.php.html#57"><abbr title="Beyondcode\LaravelProseLinter\Linter\Vale::handleFileSystem">handleFileSystem</abbr></a></td><td class="text-right">2</td></tr>
+       <tr><td><a href="Vale.php.html#148"><abbr title="Beyondcode\LaravelProseLinter\Linter\Vale::writeStyles">writeStyles</abbr></a></td><td class="text-right">2</td></tr>
+
+       </tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <footer>
+    <hr/>
+    <p>
+     <small>Generated by <a href="https://github.com/sebastianbergmann/php-code-coverage" target="_top">php-code-coverage 9.2.10</a> using <a href="https://secure.php.net/" target="_top">PHPDBG 8.1.0</a> and <a href="https://phpunit.de/">PHPUnit 9.5.11</a> at Thu Jan 6 9:47:40 UTC 2022.</small>
+    </p>
+   </footer>
+  </div>
+  <script src="../_js/jquery.min.js" type="text/javascript"></script>
+  <script src="../_js/d3.min.js" type="text/javascript"></script>
+  <script src="../_js/nv.d3.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+$(document).ready(function() {
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#classCoverageDistribution svg')
+      .datum(getCoverageDistributionData([0,0,0,0,0,0,0,0,1,2,0,2], "Class Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.multiBarChart();
+    chart.tooltips(false)
+      .showControls(false)
+      .showLegend(false)
+      .reduceXTicks(false)
+      .staggerLabels(true)
+      .yAxis.tickFormat(d3.format('d'));
+
+    d3.select('#methodCoverageDistribution svg')
+      .datum(getCoverageDistributionData([1,0,0,0,0,1,0,1,1,4,1,16], "Method Coverage"))
+      .transition().duration(500).call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getCoverageDistributionData(data, label) {
+    var labels = [
+      '0%',
+      '0-10%',
+      '10-20%',
+      '20-30%',
+      '30-40%',
+      '40-50%',
+      '50-60%',
+      '60-70%',
+      '70-80%',
+      '80-90%',
+      '90-100%',
+      '100%'
+    ];
+    var values = [];
+    $.each(labels, function(key) {
+      values.push({x: labels[key], y: data[key]});
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Cyclomatic Complexity');
+
+    d3.select('#classComplexity svg')
+      .datum(getComplexityData([[77.27272727272727,4,"<a href=\"LintingHint.php.html#5\">Beyondcode\\LaravelProseLinter\\Linter\\LintingHint<\/a>"],[100,6,"<a href=\"LintingResult.php.html#5\">Beyondcode\\LaravelProseLinter\\Linter\\LintingResult<\/a>"],[87.5,15,"<a href=\"TranslationLinter.php.html#12\">Beyondcode\\LaravelProseLinter\\Linter\\TranslationLinter<\/a>"],[83.01886792452831,17,"<a href=\"Vale.php.html#14\">Beyondcode\\LaravelProseLinter\\Linter\\Vale<\/a>"],[100,5,"<a href=\"ViewLinter.php.html#10\">Beyondcode\\LaravelProseLinter\\Linter\\ViewLinter<\/a>"]], 'Class Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  nv.addGraph(function() {
+    var chart = nv.models.scatterChart()
+      .showDistX(true)
+      .showDistY(true)
+      .showLegend(false)
+      .forceX([0, 100]);
+    chart.tooltipContent(function(graph) {
+      return '<p>' + graph.point.class + '</p>';
+    });
+
+    chart.xAxis.axisLabel('Code Coverage (in percent)');
+    chart.yAxis.axisLabel('Method Complexity');
+
+    d3.select('#methodComplexity svg')
+      .datum(getComplexityData([[100,1,"<a href=\"LintingHint.php.html#39\">Beyondcode\\LaravelProseLinter\\Linter\\LintingHint::__construct<\/a>"],[100,1,"<a href=\"LintingHint.php.html#52\">Beyondcode\\LaravelProseLinter\\Linter\\LintingHint::fromJson<\/a>"],[0,1,"<a href=\"LintingHint.php.html#68\">Beyondcode\\LaravelProseLinter\\Linter\\LintingHint::toArray<\/a>"],[100,1,"<a href=\"LintingHint.php.html#82\">Beyondcode\\LaravelProseLinter\\Linter\\LintingHint::toFlatArray<\/a>"],[100,2,"<a href=\"LintingResult.php.html#22\">Beyondcode\\LaravelProseLinter\\Linter\\LintingResult::fromJsonOutput<\/a>"],[100,1,"<a href=\"LintingResult.php.html#38\">Beyondcode\\LaravelProseLinter\\Linter\\LintingResult::getTextIdentifier<\/a>"],[100,1,"<a href=\"LintingResult.php.html#46\">Beyondcode\\LaravelProseLinter\\Linter\\LintingResult::getHints<\/a>"],[100,2,"<a href=\"LintingResult.php.html#54\">Beyondcode\\LaravelProseLinter\\Linter\\LintingResult::toArray<\/a>"],[100,4,"<a href=\"TranslationLinter.php.html#19\">Beyondcode\\LaravelProseLinter\\Linter\\TranslationLinter::getTranslationFiles<\/a>"],[100,1,"<a href=\"TranslationLinter.php.html#54\">Beyondcode\\LaravelProseLinter\\Linter\\TranslationLinter::readTranslationArray<\/a>"],[85.71428571428571,3,"<a href=\"TranslationLinter.php.html#66\">Beyondcode\\LaravelProseLinter\\Linter\\TranslationLinter::lintNamespace<\/a>"],[72.72727272727273,4,"<a href=\"TranslationLinter.php.html#87\">Beyondcode\\LaravelProseLinter\\Linter\\TranslationLinter::lintTranslationArray<\/a>"],[100,2,"<a href=\"TranslationLinter.php.html#109\">Beyondcode\\LaravelProseLinter\\Linter\\TranslationLinter::translationKey<\/a>"],[100,1,"<a href=\"TranslationLinter.php.html#121\">Beyondcode\\LaravelProseLinter\\Linter\\TranslationLinter::lintSingleTranslation<\/a>"],[100,1,"<a href=\"Vale.php.html#36\">Beyondcode\\LaravelProseLinter\\Linter\\Vale::__construct<\/a>"],[40,1,"<a href=\"Vale.php.html#47\">Beyondcode\\LaravelProseLinter\\Linter\\Vale::resolveValeExecutable<\/a>"],[66.66666666666666,2,"<a href=\"Vale.php.html#57\">Beyondcode\\LaravelProseLinter\\Linter\\Vale::handleFileSystem<\/a>"],[83.33333333333334,4,"<a href=\"Vale.php.html#73\">Beyondcode\\LaravelProseLinter\\Linter\\Vale::lintString<\/a>"],[90,3,"<a href=\"Vale.php.html#104\">Beyondcode\\LaravelProseLinter\\Linter\\Vale::lintFile<\/a>"],[87.5,3,"<a href=\"Vale.php.html#131\">Beyondcode\\LaravelProseLinter\\Linter\\Vale::getAppliedStyles<\/a>"],[83.33333333333334,2,"<a href=\"Vale.php.html#148\">Beyondcode\\LaravelProseLinter\\Linter\\Vale::writeStyles<\/a>"],[100,1,"<a href=\"Vale.php.html#172\">Beyondcode\\LaravelProseLinter\\Linter\\Vale::writeValeIni<\/a>"],[100,3,"<a href=\"ViewLinter.php.html#16\">Beyondcode\\LaravelProseLinter\\Linter\\ViewLinter::readBladeKeys<\/a>"],[100,1,"<a href=\"ViewLinter.php.html#40\">Beyondcode\\LaravelProseLinter\\Linter\\ViewLinter::deleteLintableCopy<\/a>"],[100,1,"<a href=\"ViewLinter.php.html#49\">Beyondcode\\LaravelProseLinter\\Linter\\ViewLinter::createLintableCopy<\/a>"]], 'Method Complexity'))
+      .transition()
+      .duration(500)
+      .call(chart);
+
+    nv.utils.windowResize(chart.update);
+
+    return chart;
+  });
+
+  function getComplexityData(data, label) {
+    var values = [];
+    $.each(data, function(key) {
+      var value = Math.round(data[key][0]*100) / 100;
+      values.push({
+        x: value,
+        y: data[key][1],
+        class: data[key][2],
+        size: 0.05,
+        shape: 'diamond'
+      });
+    });
+
+    return [
+      {
+        key: label,
+        values: values,
+        color: "#4572A7"
+      }
+    ];
+  }
+});
+  </script>
+ </body>
+</html>
