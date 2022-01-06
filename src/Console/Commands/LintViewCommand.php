@@ -2,7 +2,6 @@
 
 namespace Beyondcode\LaravelProseLinter\Console\Commands;
 
-use Beyondcode\LaravelProseLinter\Exceptions\LinterException;
 use Beyondcode\LaravelProseLinter\Linter\ViewLinter;
 use Exception;
 
@@ -38,7 +37,7 @@ class LintViewCommand extends LinterCommand
         // collect blade files to lint
         $templatesToLint = [];
         if ($singleBladeTemplate !== null) {
-            $this->line("Linting single blade template with key '{$singleBladeTemplate}'.");
+            $this->line("Linting single blade template with key '$singleBladeTemplate'.");
             $templatesToLint[] = $singleBladeTemplate;
             $totalFilesToLint = count($templatesToLint);
         } else {
@@ -52,7 +51,7 @@ class LintViewCommand extends LinterCommand
             }
             $this->line($message);
 
-            $this->line("Found {$totalFilesToLint} blade files.");
+            $this->line("Found $totalFilesToLint blade files.");
         }
 
         $this->info('🗣  Start linting ...');
@@ -67,11 +66,14 @@ class LintViewCommand extends LinterCommand
                 $progressBar->advance();
 
                 $filePath = $viewLinter->createLintableCopy($templateToLint);
-                $viewLinter->lintFile($filePath, $templateToLint);
-            } catch (LinterException $linterException) {
-                $results = array_merge($results, $linterException->getResult()->toArray());
+
+                $result = $viewLinter->lintFile($filePath, $templateToLint);
+                if ($result === null) {
+                    continue;
+                }
+                $results = array_merge($results, $result);
             } catch (Exception $exception) {
-                $this->warn("({$templateToLint}) Unexpected error.");
+                $this->warn("($templateToLint) Unexpected error.");
                 if ($verbose) {
                     $this->line($exception->getMessage());
                 }
@@ -84,5 +86,7 @@ class LintViewCommand extends LinterCommand
         $progressBar->finish();
 
         $this->finishLintingOutput($results, $outputAsJson, $lintingDuration);
+
+        return 0;
     }
 }

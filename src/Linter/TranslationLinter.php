@@ -11,6 +11,8 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class TranslationLinter extends Vale
 {
+    private array $lintingResults = [];
+
     /**
      * @return array
      */
@@ -49,7 +51,7 @@ class TranslationLinter extends Vale
      * @param  string  $namespace
      * @return array|string
      */
-    public function readTranslationArray(string $namespace)
+    public function readTranslationArray(string $namespace): array|string
     {
         // TODO flatten, e.g. validation
         return __($namespace);
@@ -69,28 +71,55 @@ class TranslationLinter extends Vale
             throw new LinterException('No translations found.');
         }
 
-        $results = [];
-        foreach ($translations as $translationKey => $translationText) {
-            try {
-                $this->lintString($translationText, "{$namespace}.{$translationKey}");
-            } catch (LinterException $linterException) {
-                $results[] = $linterException->getResult()->toArray();
-            } catch (ProcessFailedException $processFailedException) {
-                break; // todo
-            }
+        $this->lintingResults = [];
+        try {
+            $this->lintTranslationArray($translations, $namespace);
+        } catch (ProcessFailedException $processFailedException) {
+            // toDo
         }
 
-        return $results;
+        return $this->lintingResults;
+    }
+
+    /**
+     * @throws LinterException
+     */
+    private function lintTranslationArray($translations, $parentKey = null)
+    {
+        foreach ($translations as $translationKey => $translationText) {
+            if (is_array($translationText)) {
+                $fullKey = $this->translationKey($translationKey, $parentKey);
+                $this->lintTranslationArray($translationText, $fullKey);
+                continue;
+            }
+
+            $result = $this->lintString(
+                $translationText,
+                $this->translationKey($translationKey, $parentKey)
+            );
+
+            if ($result === null) {
+                continue;
+            }
+
+            $this->lintingResults[] = $result;
+        }
+    }
+
+    private function translationKey($translationKey, $parentKey = null): string
+    {
+        return $parentKey ? $parentKey.'.'.$translationKey : $translationKey;
     }
 
     /**
      * @param  string  $translationKey
      * @param  string  $translationText
+     * @return array|null
      *
      * @throws LinterException
      */
-    public function lintSingleTranslation(string $translationKey, string $translationText)
+    public function lintSingleTranslation(string $translationKey, string $translationText): array|null
     {
-        $this->lintString($translationText, $translationKey);
+        return $this->lintString($translationText, $translationKey);
     }
 }

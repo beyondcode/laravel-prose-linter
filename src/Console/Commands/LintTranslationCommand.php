@@ -36,7 +36,7 @@ class LintTranslationCommand extends LinterCommand
                 $results[] = $translationLinter->lintNamespace($namespaceToLint);
                 $progressBar->advance();
             } catch (Exception $exception) {
-                $this->warn("({$namespaceToLint}) Unexpected error.");
+                $this->warn("($namespaceToLint) Unexpected error.");
                 if ($verbose) {
                     $this->line($exception->getMessage());
                 }
@@ -49,5 +49,7 @@ class LintTranslationCommand extends LinterCommand
         $progressBar->finish();
 
         $this->finishLintingOutput($tableResults, $outputAsJson, $lintingDuration);
+
+        return 0;
     }
 }
