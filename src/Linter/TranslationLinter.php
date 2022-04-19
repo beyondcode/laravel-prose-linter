@@ -18,7 +18,6 @@ class TranslationLinter extends Vale
      */
     public function getTranslationFiles(): array
     {
-
         $languageDirectory = lang_path('en');
 
         $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($languageDirectory));
