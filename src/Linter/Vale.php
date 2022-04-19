@@ -153,9 +153,9 @@ class Vale
         File::deleteDirectory($stylePath);
 
         // copy resources from application styles if existing
-        if (File::exists(resource_path('lang/vendor/laravel-prose-linter'))) {
+        if (File::exists(resource_path('laravel-prose-linter'))) {
             File::copyDirectory(
-                resource_path('lang/vendor/laravel-prose-linter'),
+                resource_path('laravel-prose-linter'),
                 $stylePath
             );
         } else {

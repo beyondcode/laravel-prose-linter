@@ -20,7 +20,7 @@ class LaravelProseLinterServiceProvider extends ServiceProvider
 
             // Publish the style files
             $this->publishes([
-                __DIR__.'/../resources/styles' => resource_path('lang/vendor/laravel-prose-linter'),
+                __DIR__.'/../resources/styles' => resource_path('laravel-prose-linter'),
             ], 'linting-styles');
 
             // Register package commands

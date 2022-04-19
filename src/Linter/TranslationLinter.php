@@ -18,15 +18,18 @@ class TranslationLinter extends Vale
      */
     public function getTranslationFiles(): array
     {
-        $languageDirectory = resource_path("lang{$this->directorySeparator}en");
 
-        // the language resource directory has moved with new Laravel 9 installations
-        if (
-            ! file_exists($languageDirectory) &&
-            (version_compare(app()->version(), '9.0', '>='))
-        ) {
-            $languageDirectory = "lang{$this->directorySeparator}en";
-        }
+        // $languageDirectory = resource_path("lang{$this->directorySeparator}en");
+
+        // // the language resource directory has moved with new Laravel 9 installations
+        // if (
+        //     ! file_exists($languageDirectory) &&
+        //     (version_compare(app()->version(), '9.0', '>='))
+        // ) {
+        //     $languageDirectory = "lang{$this->directorySeparator}en";
+        // }
+
+        $languageDirectory = lang_path('en');
 
         $it = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($languageDirectory));
 
